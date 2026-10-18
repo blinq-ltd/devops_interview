@@ -1,0 +1,124 @@
+# IAM role attached to the workstation instance. This is the role the
+# CANDIDATE effectively operates under (via the instance profile) during the
+# live session, so it is kept least-privilege and scoped by the
+# `${var.name_prefix}-*` naming convention that the EKS/Aurora/Kafka modules
+# (built next) are expected to follow.
+#
+# NOTE: scenario 6 (Terraform drift/maintenance exercise) needs the candidate
+# to run `terraform plan`/`apply` against the EKS nodegroup. The exact
+# EKS/EC2/IAM write permissions that requires can only be scoped once that
+# module exists, so a placeholder statement is marked TODO below — revisit
+# before the interview.
+
+data "aws_iam_policy_document" "workstation_assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "workstation" {
+  name               = "${var.name_prefix}-workstation-candidate-role"
+  assume_role_policy = data.aws_iam_policy_document.workstation_assume_role.json
+}
+
+data "aws_iam_policy_document" "workstation_candidate" {
+  # Identity / general diagnostics
+  statement {
+    sid       = "CallerIdentity"
+    actions   = ["sts:GetCallerIdentity"]
+    resources = ["*"]
+  }
+
+  statement {
+    sid = "ReadOnlyNetworkDiagnostics"
+    actions = [
+      "ec2:DescribeInstances",
+      "ec2:DescribeSecurityGroups",
+      "ec2:DescribeSubnets",
+      "ec2:DescribeVpcs",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DescribeRouteTables",
+    ]
+    resources = ["*"]
+  }
+
+  # ECR: push/pull limited to this lab's repositories
+  statement {
+    sid       = "EcrAuth"
+    actions   = ["ecr:GetAuthorizationToken"]
+    resources = ["*"]
+  }
+
+  statement {
+    sid = "EcrReadWriteScoped"
+    actions = [
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "ecr:PutImage",
+      "ecr:InitiateLayerUpload",
+      "ecr:UploadLayerPart",
+      "ecr:CompleteLayerUpload",
+      "ecr:DescribeRepositories",
+      "ecr:ListImages",
+      "ecr:DescribeImages",
+    ]
+    resources = [
+      "arn:aws:ecr:${var.aws_region}:${data.aws_caller_identity.current.account_id}:repository/${var.name_prefix}-*",
+    ]
+  }
+
+  # EKS: describe/list + kubeconfig generation, scoped to lab clusters
+  statement {
+    sid = "EksDescribeScoped"
+    actions = [
+      "eks:DescribeCluster",
+      "eks:ListClusters",
+      "eks:DescribeNodegroup",
+      "eks:ListNodegroups",
+      "eks:ListUpdates",
+      "eks:DescribeUpdate",
+      "eks:AccessKubernetesApi",
+    ]
+    resources = [
+      "arn:aws:eks:${var.aws_region}:${data.aws_caller_identity.current.account_id}:cluster/${var.name_prefix}-*",
+      "arn:aws:eks:${var.aws_region}:${data.aws_caller_identity.current.account_id}:nodegroup/${var.name_prefix}-*/*/*",
+    ]
+  }
+
+  # RDS: describe only; actual DB auth happens via a lab-issued DB role/password, not IAM
+  statement {
+    sid = "RdsDescribeScoped"
+    actions = [
+      "rds:DescribeDBInstances",
+      "rds:DescribeDBClusters",
+      "rds:DescribeDBSubnetGroups",
+      "rds:DescribeDBClusterEndpoints",
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringLike"
+      variable = "aws:ResourceTag/Project"
+      values   = ["devops-interview"]
+    }
+  }
+
+  # TODO(scenario-6): add scoped EKS nodegroup / EC2 tagging / autoscaling
+  # write permissions once infra/eks is written, limited to the specific
+  # nodegroup(s) and tag-change operations rehearsed for the exercise.
+}
+
+resource "aws_iam_role_policy" "workstation_candidate" {
+  name   = "${var.name_prefix}-candidate-scoped-access"
+  role   = aws_iam_role.workstation.id
+  policy = data.aws_iam_policy_document.workstation_candidate.json
+}
+
+resource "aws_iam_instance_profile" "workstation" {
+  name = "${var.name_prefix}-workstation"
+  role = aws_iam_role.workstation.name
+}

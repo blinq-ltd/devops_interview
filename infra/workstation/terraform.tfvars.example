@@ -1,0 +1,8 @@
+# Copy to terraform.tfvars (gitignored) and fill in before applying.
+
+allowed_ssh_cidrs = [
+  "203.0.113.10/32", # candidate's public IP - CONFIRM DAY-OF, IPs change
+  "198.51.100.5/32", # interviewer's own IP, for testing/admin access
+]
+
+candidate_ssh_public_key = "ssh-ed25519 AAAA... blinq-devops-interview-candidate"
