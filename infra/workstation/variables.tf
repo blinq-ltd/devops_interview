@@ -62,6 +62,12 @@ variable "terraform_version" {
   default     = "1.14.0"
 }
 
+variable "additional_internal_cidrs" {
+  description = "Extra CIDR blocks (e.g. the peered infra/eks VPC) the workstation's internal-service egress rules should reach, in addition to the default VPC"
+  type        = list(string)
+  default     = []
+}
+
 variable "internal_service_ports" {
   description = "TCP ports on future private lab services (EKS API, Aurora, Kafka, observability) that the workstation needs to reach"
   type = list(object({

@@ -19,6 +19,10 @@ locals {
   workstation_subnet_id = sort(data.aws_subnets.default_public.ids)[0]
 }
 
+# Single-responsibility: this SG only governs SSH ingress. It carries no
+# egress rules of its own (tfsec: aws-ec2-no-public-egress-sgr) - all
+# outbound traffic for the instance is governed by workstation_internal's
+# scoped egress below, since the instance has both SGs attached.
 resource "aws_security_group" "workstation_ssh" {
   name        = "${var.name_prefix}-workstation-ssh"
   description = "SSH access to the candidate workstation"
@@ -32,17 +36,26 @@ resource "aws_security_group" "workstation_ssh" {
     cidr_blocks = var.allowed_ssh_cidrs
   }
 
-  egress {
-    description = "All outbound"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   tags = {
     Name = "${var.name_prefix}-workstation-ssh"
   }
+}
+
+# Generic internet egress a build/dev workstation genuinely needs: package
+# mirrors (apt, Docker Hub, GitHub releases, HashiCorp/Apache mirrors), DNS
+# and NTP. A static CIDR allow-list isn't practical here - these endpoints
+# span many, frequently-changing IP ranges across providers - so this is
+# scoped by PORT instead of by destination, which removes the "all
+# protocols/all ports" exposure tfsec flagged while keeping the box able to
+# do its job.
+locals {
+  internet_egress_ports = [
+    { description = "HTTPS (package mirrors, AWS/GitHub APIs)", protocol = "tcp", port = 443 },
+    { description = "HTTP (apt mirrors)", protocol = "tcp", port = 80 },
+    { description = "DNS (tcp)", protocol = "tcp", port = 53 },
+    { description = "DNS (udp)", protocol = "udp", port = 53 },
+    { description = "NTP", protocol = "udp", port = 123 },
+  ]
 }
 
 # Attach this SG to future private lab resources (EKS nodes/control plane
@@ -56,12 +69,35 @@ resource "aws_security_group" "workstation_internal" {
   description = "Identity SG for the candidate workstation; referenced as an allowed source by private lab services (EKS, Aurora, Kafka, observability)"
   vpc_id      = data.aws_vpc.default.id
 
-  egress {
-    description = "Reach private lab services"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+  # Accepted risk: tfsec (AVD-AWS-0104) flags any 0.0.0.0/0 egress regardless
+  # of port scope. A build/dev workstation must reach package mirrors
+  # (apt, Docker Hub, GitHub releases, HashiCorp/Apache mirrors) that span
+  # many, frequently-changing provider IP ranges - a static CIDR allow-list
+  # isn't maintainable. Mitigation already applied: scoped to 5 specific
+  # ports instead of all protocols/all ports (see the removed "-1" rule this
+  # replaced).
+  #tfsec:ignore:aws-ec2-no-public-egress-sgr
+  dynamic "egress" {
+    for_each = { for p in local.internet_egress_ports : "${p.protocol}-${p.port}" => p }
+    content {
+      description = egress.value.description
+      from_port   = egress.value.port
+      to_port     = egress.value.port
+      protocol    = egress.value.protocol
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+
+  dynamic "egress" {
+    for_each = { for p in var.internal_service_ports : "svc-${p.port}" => p }
+    content {
+      description = egress.value.description
+      from_port   = egress.value.port
+      to_port     = egress.value.port
+      protocol    = "tcp"
+      # default VPC (this box) + the peered EKS/lab VPC, once infra/eks exists
+      cidr_blocks = concat([data.aws_vpc.default.cidr_block], var.additional_internal_cidrs)
+    }
   }
 
   tags = {

@@ -90,7 +90,11 @@ data "aws_iam_policy_document" "workstation_candidate" {
     ]
   }
 
-  # RDS: describe only; actual DB auth happens via a lab-issued DB role/password, not IAM
+  # RDS: describe only; actual DB auth happens via a lab-issued DB role/password, not IAM.
+  # rds:Describe* actions do not support resource-level ARNs (AWS requires
+  # Resource: "*" for them), so access is scoped via the ResourceTag
+  # condition below instead - this is the correct/only available control.
+  #tfsec:ignore:aws-iam-no-policy-wildcards
   statement {
     sid = "RdsDescribeScoped"
     actions = [
