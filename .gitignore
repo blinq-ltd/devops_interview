@@ -20,3 +20,6 @@ terraform.tfvars
 *.pem
 id_*
 !id_*.pub
+
+# Local-only working notes (not for the shared repo)
+notes.md
