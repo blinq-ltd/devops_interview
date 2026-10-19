@@ -1,0 +1,42 @@
+# Trimmed for a 2-node t3.large lab cluster already running CloudNativePG +
+# Argo CD. Keeps Prometheus + Grafana, drops components not needed for this
+# scenario (Alertmanager, node-exporter still useful for basics, kept).
+prometheus:
+  prometheusSpec:
+    retention: 6h
+    enableRemoteWriteReceiver: true # Alloy's prometheus.remote_write needs this
+    resources:
+      requests: { cpu: 100m, memory: 256Mi }
+      limits: { memory: 512Mi }
+    # No persistent storage - this is a short-lived interview lab; data
+    # loss on pod restart is an accepted tradeoff, not relevant to the
+    # exercise (which is about collector-side behavior, not Prometheus's
+    # own durability).
+
+alertmanager:
+  enabled: false
+
+grafana:
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits: { memory: 256Mi }
+  persistence:
+    enabled: false
+  additionalDataSources:
+    - name: Loki
+      type: loki
+      url: http://loki-gateway.observability.svc.cluster.local
+      access: proxy
+
+prometheusOperator:
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits: { memory: 256Mi }
+
+kubeStateMetrics:
+  resources:
+    requests: { cpu: 20m, memory: 64Mi }
+
+nodeExporter:
+  resources:
+    requests: { cpu: 20m, memory: 32Mi }

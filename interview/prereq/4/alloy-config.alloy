@@ -1,0 +1,65 @@
+// Scenario 4 starting state: this pipeline is WORKING (metrics + logs flow
+// correctly end-to-end), but the cardinality fault is live - the
+// prometheus.relabel stage below has no rule dropping the generator's
+// request_id label, so every scrape creates brand-new time series.
+// Candidate's task: add a labeldrop rule here, show new-series creation
+// stop, and still correlate a request via its logged request_id.
+
+discovery.kubernetes "pods" {
+  role = "pod"
+  namespaces {
+    names = ["observability"]
+  }
+}
+
+discovery.relabel "generator" {
+  targets = discovery.kubernetes.pods.targets
+
+  rule {
+    source_labels = ["__meta_kubernetes_pod_label_app"]
+    regex         = "synthetic-generator"
+    action        = "keep"
+  }
+
+  rule {
+    source_labels = ["__meta_kubernetes_pod_ip"]
+    regex         = "(.+)"
+    target_label  = "__address__"
+    replacement   = "${1}:9090"
+  }
+}
+
+prometheus.scrape "generator" {
+  targets         = discovery.relabel.generator.output
+  forward_to      = [prometheus.relabel.generator.receiver]
+  scrape_interval = "10s"
+  scrape_timeout  = "5s"
+  job_name        = "synthetic-generator"
+}
+
+// FAULT: no rule here yet to drop the unbounded request_id label.
+// Candidate adds (inside this block):
+//   rule {
+//     action = "labeldrop"
+//     regex  = "request_id"
+//   }
+prometheus.relabel "generator" {
+  forward_to = [prometheus.remote_write.default.receiver]
+}
+
+prometheus.remote_write "default" {
+  endpoint {
+    url = "http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090/api/v1/write"
+  }
+}
+
+loki.source.kubernetes "pods" {
+  targets    = discovery.kubernetes.pods.targets
+  forward_to = [loki.write.default.receiver]
+}
+
+loki.write "default" {
+  endpoint {
+    url = "http://loki-gateway.observability.svc.cluster.local/loki/api/v1/push"
+  }
+}

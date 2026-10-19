@@ -1,0 +1,14 @@
+alloy:
+  # configMap.content is NOT set here - passed at install time via
+  # `--set-file alloy.configMap.content=alloy-config.alloy` (see README),
+  # so the pipeline config lives in its own reviewable .alloy file.
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits: { memory: 256Mi }
+
+controller:
+  type: deployment # a single collector is enough for this lab; DaemonSet is the production pattern (discussion point)
+  replicas: 1
+
+serviceMonitor:
+  enabled: false

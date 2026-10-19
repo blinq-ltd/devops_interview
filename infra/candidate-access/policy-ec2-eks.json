@@ -210,7 +210,7 @@
         "ecr:UntagResource",
         "ecr:ListTagsForResource"
       ],
-      "Resource": ["arn:aws:ecr:us-east-1:382163918348:repository/devops-interview-api"],
+      "Resource": ["arn:aws:ecr:us-east-1:382163918348:repository/devops-interview-*"],
       "Sid": "EcrRepoLifecycle"
     }
   ]
