@@ -72,9 +72,26 @@ module "eks" {
     provider_key_arn = aws_kms_key.eks.arn
     resources        = ["secrets"]
   }
+  # NOTE: the module also creates its own internal KMS key by default
+  # (redundant - kms.tf's aws_kms_key.eks is what's actually used for
+  # encryption_config above). Tried create_kms_key = false to remove it, but
+  # that cascades into updating the live cluster/addons/OIDC provider/IAM
+  # policy resources - too risky to do on top of an already-running
+  # interview cluster for a cosmetic cleanup. Left as-is. The only
+  # consequence: gleb's scoped IAM policy can't read this unused key's
+  # restrictive built-in key policy, so `terraform plan` under his role
+  # shows a harmless one-line phantom "update" on it every time - cosmetic,
+  # doesn't block apply, see README.
 
-  enable_irsa                              = true
-  enable_cluster_creator_admin_permissions = true
+  enable_irsa = true
+  # Deliberately false: this flag grants admin to whoever's identity is
+  # CURRENTLY running terraform apply, re-evaluated every apply - not frozen
+  # to the original creator. Found via testing: when gleb (the "candidate"
+  # role) ran a plan, it wanted to delete tapan_halani's creator-granted
+  # access entry and replace it with one for the candidate role, which would
+  # have silently revoked tapan_halani's cluster-admin access on apply.
+  # Admin access is explicit and static via var.cluster_admins instead.
+  enable_cluster_creator_admin_permissions = false
 
   enabled_log_types                      = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   cloudwatch_log_group_retention_in_days = 7
