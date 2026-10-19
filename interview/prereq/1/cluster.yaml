@@ -1,0 +1,33 @@
+# The database the candidate's app (apps/api) connects to. Comes up with an
+# empty "appdb" database + "appuser" - the app's own `npm run migrate`
+# (apps/api/src/migrate.js) creates the schema, matching the scenario's
+# "documented migrate command" requirement. We deliberately do NOT
+# pre-create the schema here.
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: interview-db
+  namespace: cnpg-database
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.6
+
+  storage:
+    size: 5Gi
+    storageClass: gp3
+
+  bootstrap:
+    initdb:
+      database: appdb
+      owner: appuser
+
+  # Candidate-facing: CloudNativePG auto-generates a Secret named
+  # "interview-db-app" with keys user/password/host/port/dbname/uri - wire
+  # it into the app deployment directly, no extra secret-management step
+  # needed for this scenario.
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      memory: "512Mi"

@@ -23,3 +23,10 @@ id_*
 
 # Local-only working notes (not for the shared repo)
 notes.md
+
+# Node (apps/*)
+node_modules/
+.env
+
+# Interviewer-only fault-injection/reset runbooks - never shared with candidates
+interview/steps/

@@ -35,6 +35,10 @@ output "update_kubeconfig_command" {
   value       = "aws eks update-kubeconfig --name ${module.eks.cluster_name} --region ${var.aws_region}"
 }
 
+output "ecr_repository_url" {
+  value = aws_ecr_repository.api.repository_url
+}
+
 output "vpc_peering_connection_id" {
   value = var.enable_vpc_peering ? module.vpc_peering[0].peering_connection_id : null
 }

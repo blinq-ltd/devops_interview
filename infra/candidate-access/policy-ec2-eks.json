@@ -196,6 +196,22 @@
       "Action": ["ssm:GetParameter"],
       "Resource": ["arn:aws:ssm:us-east-1::parameter/aws/service/eks/*"],
       "Sid": "SsmEksAmiLookup"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ecr:CreateRepository",
+        "ecr:DeleteRepository",
+        "ecr:DescribeRepositories",
+        "ecr:GetLifecyclePolicy",
+        "ecr:PutLifecyclePolicy",
+        "ecr:DeleteLifecyclePolicy",
+        "ecr:TagResource",
+        "ecr:UntagResource",
+        "ecr:ListTagsForResource"
+      ],
+      "Resource": ["arn:aws:ecr:us-east-1:382163918348:repository/devops-interview-api"],
+      "Sid": "EcrRepoLifecycle"
     }
   ]
 }

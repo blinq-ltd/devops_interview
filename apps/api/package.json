@@ -1,0 +1,17 @@
+{
+  "name": "devops-interview-api",
+  "version": "1.0.0",
+  "description": "Minimal CRUD API for the Blinq DevOps interview - candidate containerizes and deploys this.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "migrate": "node src/migrate.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "4.22.3",
+    "pg": "8.13.1"
+  }
+}
