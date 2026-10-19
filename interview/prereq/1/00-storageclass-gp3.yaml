@@ -2,6 +2,12 @@
 # provisioner. We installed the aws-ebs-csi-driver addon (infra/eks), so
 # this gives CloudNativePG (and anything else needing a PVC) a modern
 # CSI-backed gp3 default instead.
+#
+# NOTE: only this gp3 class is applied via `kubectl apply -f` (a brand new
+# object). The pre-existing "gp2" class must be de-defaulted separately via
+# `kubectl patch` - re-applying its full definition (even unchanged) fails
+# with "field is immutable" because `kubectl apply`'s 3-way merge doesn't
+# have a prior last-applied-config annotation to diff against. See README.
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -15,17 +21,3 @@ parameters:
 volumeBindingMode: WaitForFirstConsumer
 reclaimPolicy: Delete
 allowVolumeExpansion: true
----
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: gp2
-  annotations:
-    # no longer the default - gp3 (above) is.
-    storageclass.kubernetes.io/is-default-class: "false"
-provisioner: kubernetes.io/aws-ebs
-parameters:
-  type: gp2
-volumeBindingMode: WaitForFirstConsumer
-reclaimPolicy: Delete
-allowVolumeExpansion: false

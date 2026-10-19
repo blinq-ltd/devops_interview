@@ -7,6 +7,10 @@ cluster there).
 
 ```bash
 kubectl apply -f 00-storageclass-gp3.yaml
+# the built-in "gp2" class can't be re-applied (immutable field error on an
+# unmanaged object) - patch its default annotation off instead:
+kubectl patch storageclass gp2 -p \
+  '{"metadata":{"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
 ```
 
 ## 2. Install the CloudNativePG operator
@@ -19,7 +23,8 @@ helm repo update
 helm install cnpg-operator cnpg/cloudnative-pg \
   --version 0.29.1 \
   --namespace cnpg-system --create-namespace
-kubectl rollout status deployment/cnpg-controller-manager -n cnpg-system
+# release name "cnpg-operator" -> deployment name "cnpg-operator-cloudnative-pg"
+kubectl rollout status deployment/cnpg-operator-cloudnative-pg -n cnpg-system
 ```
 
 ## 3. Create the database
@@ -44,6 +49,24 @@ This creates:
 kubectl get cluster -n cnpg-database
 kubectl get secret interview-db-app -n cnpg-database -o jsonpath='{.data.uri}' | base64 -d; echo
 ```
+
+## Status
+
+Applied and verified against the live cluster 2026-10-19: `gp3` is default,
+CloudNativePG operator `cnpg-operator-cloudnative-pg` running, `interview-db`
+cluster healthy (1 instance, `gp3` 5Gi PVC bound), `interview-db-app` secret
+present in `cnpg-database`. Validated the exact schema/queries `apps/api`
+uses directly against it (create table, insert, select, update), then
+dropped the table again so the candidate starts from a genuinely empty
+database.
+
+**Not yet done** (out of scope for this pass - app code + database only):
+AWS Load Balancer Controller, ACM certificate, and an Ingress for
+`test-int.blinqme.com`. Until that exists, the candidate's own Service/
+Ingress can't be reached over HTTPS from outside the cluster - only from
+the workstation (`kubectl port-forward`, or a `NodePort`/internal
+`LoadBalancer` Service). Needed before the actual interview if an
+externally-reachable HTTPS endpoint is part of the exercise.
 
 ## What's deliberately NOT done here
 
