@@ -1,0 +1,8 @@
+# Created once, manually (kubectl apply -f) - NOT part of the Argo-synced
+# gitops/ path. The AppProject's clusterResourceWhitelist is deliberately
+# empty (a restricted per-app project shouldn't manage cluster-scoped
+# resources), so Argo correctly refuses to create a Namespace itself.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: interview-baseline
