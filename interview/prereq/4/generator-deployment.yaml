@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: generator
-          image: 382163918348.dkr.ecr.us-east-1.amazonaws.com/devops-interview-generator:v1
+          image: 382163918348.dkr.ecr.us-east-1.amazonaws.com/devops-interview-generator:v2
           env:
             - name: REQUEST_INTERVAL_SECONDS
               value: "1"

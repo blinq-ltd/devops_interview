@@ -1,9 +1,7 @@
 # Scenario 2 prerequisites: Argo CD + an already-managed baseline app
 
 This is an **interviewer-owned** copy of `apps/api`, separate from whatever
-the candidate builds in scenario 1 - scenario 2 assumes "the service is now
-managed by Argo CD" as a given starting point, not something the candidate
-sets up themselves.
+the candidate builds in scenario 1.
 
 ## Setup (run from the workstation)
 
@@ -38,19 +36,4 @@ kubectl apply -f argocd/appproject.yaml
 kubectl apply -f argocd/application.yaml
 ```
 
-## Status
-
-Applied and verified 2026-10-19: Argo CD running, `devops-interview-api`
-Application `Synced` to `main`, deployed into `interview-baseline`.
-**Deliberately degraded** — pods `Running` but `0/1 Ready` (readiness probe
-hits `/ready`; the app serves `/readyz`) — this is the scenario's intended
-starting state, not a bug. Self-heal/prune verified live (see
-`interview/steps/2/`, local-only).
-
-## What's deliberately NOT done here
-
-- The fix (readiness path correction) — the candidate's task.
-- A completed migration Job with proper PreSync ordering —
-  `migration-job-skeleton.yaml` is a deliberately incomplete starting point.
-- A demonstrated failing-migration-blocks-release run — set this up live
-  during the interview (see `interview/steps/2/`), not pre-baked.
+See `interview/questions/2.md` for the candidate-facing task description.

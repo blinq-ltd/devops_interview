@@ -39,9 +39,6 @@ spec:
               port: 3000
             initialDelaySeconds: 3
           readinessProbe:
-            # INJECTED FAULT (scenario 2 starting state): the app serves
-            # /readyz, not /ready. Candidate's task: diagnose via Argo's
-            # Degraded status + pod events, fix in Git, watch it reconcile.
             httpGet:
               path: /ready
               port: 3000

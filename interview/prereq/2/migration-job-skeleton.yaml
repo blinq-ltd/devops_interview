@@ -1,16 +1,8 @@
-# Candidate-facing skeleton for the scenario 2 task: "add a migration Job
-# that must succeed before the new API version rolls out." Deliberately
-# incomplete - no Argo CD hook annotation, no sync-wave, no backoffLimit/TTL
-# policy. The candidate adds what's needed (e.g. PreSync hook + HookSucceeded
-# deletion policy, or an alternative ordering mechanism of their choosing)
-# and explains the tradeoffs.
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: devops-interview-api-migrate
   namespace: interview-baseline
-  # TODO(candidate): how does this run BEFORE the new Deployment rolls out,
-  # exactly once per release, with correct cleanup/retry behavior?
 spec:
   template:
     spec:
