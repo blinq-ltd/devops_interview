@@ -1,8 +1,9 @@
 # IAM role attached to the workstation instance. This is the role the
 # CANDIDATE effectively operates under (via the instance profile) during the
-# live session, so it is kept least-privilege and scoped by the
-# `${var.name_prefix}-*` naming convention that the EKS/Aurora/Kafka modules
-# (built next) are expected to follow.
+# live session, so it is kept least-privilege. ECR/RDS are scoped by the
+# `${var.name_prefix}-*` naming convention (devops-interview-*); the EKS
+# cluster itself is named via var.eks_cluster_name ("interview") since
+# infra/eks doesn't use the devops-interview-* prefix for the cluster name.
 #
 # NOTE: scenario 6 (Terraform drift/maintenance exercise) needs the candidate
 # to run `terraform plan`/`apply` against the EKS nodegroup. The exact
@@ -85,8 +86,8 @@ data "aws_iam_policy_document" "workstation_candidate" {
       "eks:AccessKubernetesApi",
     ]
     resources = [
-      "arn:aws:eks:${var.aws_region}:${data.aws_caller_identity.current.account_id}:cluster/${var.name_prefix}-*",
-      "arn:aws:eks:${var.aws_region}:${data.aws_caller_identity.current.account_id}:nodegroup/${var.name_prefix}-*/*/*",
+      "arn:aws:eks:${var.aws_region}:${data.aws_caller_identity.current.account_id}:cluster/${var.eks_cluster_name}",
+      "arn:aws:eks:${var.aws_region}:${data.aws_caller_identity.current.account_id}:nodegroup/${var.eks_cluster_name}/*/*",
     ]
   }
 

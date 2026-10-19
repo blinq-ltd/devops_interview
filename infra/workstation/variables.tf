@@ -38,6 +38,12 @@ variable "candidate_ssh_public_key" {
   type        = string
 }
 
+variable "eks_cluster_name" {
+  description = "Actual name of the infra/eks cluster (its cluster_name var, e.g. 'interview') - used to scope the workstation IAM role's EKS permissions. NOT the same as name_prefix: infra/eks doesn't use the devops-interview-* naming convention for the cluster itself."
+  type        = string
+  default     = "interview"
+}
+
 variable "ec2_key_pair_name" {
   description = "Name of an EC2 key pair already registered in AWS, used as the instance's key_name (default 'ubuntu' user access)"
   type        = string

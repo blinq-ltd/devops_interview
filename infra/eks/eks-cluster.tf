@@ -80,14 +80,24 @@ module "eks" {
   cloudwatch_log_group_retention_in_days = 7
 
   addons = {
+    # before_compute = true installs these BEFORE the node group, which is
+    # required for vpc-cni: without it, nodes authenticate with the cluster
+    # but never go Ready (no CNI plugin), the node group polls CREATING
+    # indefinitely waiting on Ready nodes, and the addon (sequenced after
+    # compute by default) never gets a chance to install - a deadlock.
+    # kube-proxy has no such hard requirement but is just as fundamental, so
+    # it's included here too. coredns deliberately stays default
+    # (after compute) since it needs a Ready node to schedule onto.
     vpc-cni = {
-      most_recent = true
+      most_recent    = true
+      before_compute = true
     }
     coredns = {
       most_recent = true
     }
     kube-proxy = {
-      most_recent = true
+      most_recent    = true
+      before_compute = true
     }
     aws-ebs-csi-driver = {
       most_recent              = true
