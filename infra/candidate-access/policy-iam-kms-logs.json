@@ -143,6 +143,21 @@
           ]
         }
       }
+    },
+    {
+      "Sid": "TerraformStateBackend",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
+      "Resource": "arn:aws:s3:::terraform-states-382163918348/devops-interview/*"
+    },
+    {
+      "Sid": "TerraformStateBucketList",
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": "arn:aws:s3:::terraform-states-382163918348",
+      "Condition": {
+        "StringLike": { "s3:prefix": "devops-interview/*" }
+      }
     }
   ]
 }
