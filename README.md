@@ -7,16 +7,24 @@ interview lab, run in the isolated `blinq-interviews` AWS account
 ## Status
 
 - [x] `infra/workstation` — candidate EC2 workstation (SSH + VS Code Remote-SSH)
-- [x] `infra/eks` — EKS cluster "interview" (Kubernetes 1.36), VPC, node group, VPC peering to the workstation
+- [x] `infra/eks` — EKS cluster "interview" (Kubernetes 1.36), VPC, 2-node t3.large node group, VPC peering to the workstation, ECR (api + generator repos)
 - [x] `infra/candidate-access` — scoped IAM user/role so the candidate can run Terraform themselves (scenario 6)
-- [ ] `infra/aurora` — private Aurora PostgreSQL
-- [ ] `infra/kafka` — Strimzi-managed Kafka on EKS
-- [ ] ECR, ALB ingress / ACM cert / test hostname, GitHub Actions OIDC
-- [ ] Argo CD + starter Application
-- [ ] Observability stack (Grafana, Mimir/Loki/Tempo, Alloy)
-- [ ] `apps/` — tiny frontend + API + migrations skeleton for the candidate
-- [ ] Prepared/resettable incident scripts (readiness fault, Aurora leak, telemetry cardinality + egress block, Kafka broker fault, Terraform drift)
-- [ ] `interview/prereq/<n>` and `interview/steps/<n>` per scenario (1,2,3,4,6 — Kafka/5 skipped)
+- [x] `apps/api` — minimal Node.js CRUD API (GET/POST/PUT `/items`) backed by Postgres; candidate containerizes/deploys it (scenario 1)
+- [x] Scenario 1 prereqs — CloudNativePG database (`interview-db`), gp3 default StorageClass
+- [x] Scenario 2 prereqs — Argo CD + an interviewer-owned baseline deployment, degraded on purpose (wrong readiness path)
+- [x] Scenario 3 prereqs — restricted `loadtest` DB role (connection-limit incident), CloudNativePG-native PgBouncer `Pooler`, load-generation scripts
+- [x] Scenario 4 prereqs — single-cluster observability stack (Prometheus/Grafana, Loki, Alloy) with a live, verified cardinality fault
+- [x] Scenario 6 prereqs — prepared Terraform change (harmless tag + disruptive node-group replacement) with a saved plan
+- [ ] Scenario 5 (Kafka) — **explicitly skipped** per instruction
+- [ ] ALB ingress / ACM cert / test hostname (`test-int.blinqme.com`) — no externally-reachable HTTPS endpoint yet, see `interview/prereq/1/README.md`
+- [ ] GitHub Actions OIDC trust — left to the candidate to build (scenario 1, discussion ★Q1)
+- [ ] Tracing backend (Tempo) — `apps/api` isn't instrumented; traces stay conceptual in scenario 4
+- [ ] `interview/aurora` — not applicable: scenario 3 was adapted to use the self-hosted CloudNativePG database instead of AWS RDS Aurora (see `apps/api`/scenario 3 prereq README for why)
+
+Per-scenario prerequisites live in `interview/prereq/<n>/` (committed,
+IaC/k8s code). Interviewer-only fault-injection/reset runbooks live in
+`interview/steps/<n>/` — **gitignored, local-only, never shared with
+candidates**.
 
 Scenario source: internal interview guide (not stored in this repo).
 
@@ -135,11 +143,48 @@ both modules with zero permission errors and zero real drift (confirmed
 against a plan run with the interviewer's own admin credentials in
 parallel).
 
+## apps/api
+
+The candidate-facing starting point for scenario 1: a minimal Express/pg
+CRUD API (`GET`/`POST`/`PUT /items`, `/livez`, `/readyz`), with a
+documented `npm run migrate` command but deliberately **no** Dockerfile,
+Helm chart/Kustomize overlay, or CI pipeline — the candidate builds and
+deploys all of that live. See `apps/api/README.md`.
+
+## interview/
+
+Per-scenario lab material, numbered to match the interview guide's
+scenarios (1, 2, 3, 4, 6 — scenario 5/Kafka is explicitly skipped):
+
+- `interview/prereq/<n>/` — everything that must already be running before
+  the candidate starts: IaC/Helm/k8s manifests, committed and pushed like
+  any other code here. Each has its own README with setup steps and a
+  verified "Status" section.
+- `interview/steps/<n>/` — the interviewer's own runbook: how to inject
+  each scenario's fault, what "fixed" looks like, which discussion
+  questions are live-testable and how, and how to reset between
+  candidates. **Gitignored, local-only — never shared with a candidate.**
+
+Scenario 3 was adapted from the original "Aurora connection incident" to
+use the self-hosted CloudNativePG database provisioned in
+`interview/prereq/1/` instead of AWS RDS Aurora — same diagnostic approach
+(`pg_stat_activity`, connection budgets, pooling), no AWS RDS involved.
+Scenario 4's observability stack is simplified to this single cluster; the
+original's multi-cluster/separate-data-account topology stays
+discussion-only, per the interview guide itself.
+
 ## Teardown
 
 This is a disposable lab for a single interview. After the interview:
 
 ```bash
+# uninstall in-cluster stacks first (from the workstation)
+helm uninstall alloy loki kube-prometheus-stack -n observability
+helm uninstall argocd -n argocd
+helm uninstall cnpg-operator -n cnpg-system
+kubectl delete namespace observability argocd cnpg-database interview-baseline
+
+# then tear down the AWS infra
 cd infra/eks && terraform destroy
 cd ../workstation && terraform destroy
 cd ../candidate-access && terraform destroy
