@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: devops-interview-api
+  namespace: argocd
+spec:
+  project: devops-interview
+  source:
+    repoURL: "git@github.com:blinq-ltd/devops_interview.git"
+    targetRevision: main
+    path: interview/prereq/2/gitops
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: interview-baseline
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=false # namespace.yaml in the synced path creates it

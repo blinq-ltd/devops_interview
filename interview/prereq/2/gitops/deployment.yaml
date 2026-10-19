@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-interview-api
+  namespace: interview-baseline
+  labels:
+    app: devops-interview-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devops-interview-api
+  template:
+    metadata:
+      labels:
+        app: devops-interview-api
+    spec:
+      terminationGracePeriodSeconds: 15
+      containers:
+        - name: api
+          image: 382163918348.dkr.ecr.us-east-1.amazonaws.com/devops-interview-api:baseline
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: interview-db-app
+                  key: uri
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: 3000
+            initialDelaySeconds: 3
+          readinessProbe:
+            # INJECTED FAULT (scenario 2 starting state): the app serves
+            # /readyz, not /ready. Candidate's task: diagnose via Argo's
+            # Degraded status + pod events, fix in Git, watch it reconcile.
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 5

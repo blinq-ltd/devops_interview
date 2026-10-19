@@ -1,0 +1,24 @@
+# Restricted project: scenario 2 only needs to touch this one repo, this one
+# destination namespace, and a narrow set of resource kinds.
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: devops-interview
+  namespace: argocd
+spec:
+  description: Blinq DevOps interview - scenario 2 (Argo CD reconciliation)
+  sourceRepos:
+    - "git@github.com:blinq-ltd/devops_interview.git"
+  destinations:
+    - namespace: interview-baseline
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist: []
+  namespaceResourceWhitelist:
+    - group: apps
+      kind: Deployment
+    - group: ""
+      kind: Service
+    - group: batch
+      kind: Job
+    - group: ""
+      kind: ConfigMap
