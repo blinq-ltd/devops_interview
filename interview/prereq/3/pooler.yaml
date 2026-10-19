@@ -1,0 +1,29 @@
+# CloudNativePG's native PgBouncer integration - the candidate's "canary
+# through the supplied pooler" step points their Deployment's DATABASE_URL
+# at the "interview-db-pooler-rw" Service this creates, instead of
+# "interview-db-rw" directly.
+apiVersion: postgresql.cnpg.io/v1
+kind: Pooler
+metadata:
+  name: interview-db-pooler
+  namespace: cnpg-database
+spec:
+  cluster:
+    name: interview-db
+  instances: 2
+  type: rw
+  pgbouncer:
+    poolMode: transaction
+    parameters:
+      max_client_conn: "200"
+      default_pool_size: "20" # bounded server-side pool: deliberately well under the 80-connection budget
+  template:
+    spec:
+      containers:
+        - name: pgbouncer
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              memory: 64Mi

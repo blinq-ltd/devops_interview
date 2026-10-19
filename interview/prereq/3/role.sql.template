@@ -1,0 +1,11 @@
+-- Restricted synthetic-load role for scenario 3. Deliberately separate from
+-- the app's own "appuser" role, so the connection-exhaustion exercise can't
+-- accidentally take down the app's actual connection pool outside the
+-- exercise - and separate from PostgreSQL's global max_connections, per the
+-- scenario's "uses a restricted test role, not the global ... limit".
+--
+-- CONNECTION LIMIT 80 matches the stated workload budget: 4 API pods x a
+-- misconfigured 30-connection pool each = 120, already over budget before
+-- rollout surge or background workers are even considered.
+CREATE ROLE loadtest WITH LOGIN PASSWORD '__PASSWORD__' CONNECTION LIMIT 80;
+GRANT CONNECT ON DATABASE appdb TO loadtest;

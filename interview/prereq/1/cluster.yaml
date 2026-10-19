@@ -21,6 +21,12 @@ spec:
       database: appdb
       owner: appuser
 
+  # Needed for scenario 3: creating the restricted "loadtest" role requires
+  # CREATEROLE, which "appuser" (the app's own, deliberately unprivileged
+  # owner role) doesn't have. Generates an "interview-db-superuser" Secret -
+  # interviewer/admin use only, never given to the candidate.
+  enableSuperuserAccess: true
+
   # Candidate-facing: CloudNativePG auto-generates a Secret named
   # "interview-db-app" with keys user/password/host/port/dbname/uri - wire
   # it into the app deployment directly, no extra secret-management step
