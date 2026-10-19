@@ -41,6 +41,33 @@ resource "aws_security_group" "workstation_ssh" {
   }
 }
 
+# Admin dashboards (ArgoCD/Grafana/Prometheus) reached as
+# <workstation-public-ip>:<port> from the interviewer's own browser - the
+# workstation runs persistent `kubectl port-forward --address 0.0.0.0`
+# systemd services (see user_data.sh.tpl) bridging these ports to the
+# in-cluster Services. Scoped to the same trusted IPs as SSH, not the
+# whole internet - these are admin-level control planes (ArgoCD especially).
+resource "aws_security_group" "workstation_dashboards" {
+  name        = "${var.name_prefix}-workstation-dashboards"
+  description = "ArgoCD/Grafana/Prometheus UI access from trusted IPs, bridged by local kubectl port-forward"
+  vpc_id      = data.aws_vpc.default.id
+
+  dynamic "ingress" {
+    for_each = { for p in var.dashboard_ports : p.name => p }
+    content {
+      description = "${ingress.value.name} UI"
+      from_port   = ingress.value.port
+      to_port     = ingress.value.port
+      protocol    = "tcp"
+      cidr_blocks = var.allowed_ssh_cidrs
+    }
+  }
+
+  tags = {
+    Name = "${var.name_prefix}-workstation-dashboards"
+  }
+}
+
 # Generic internet egress a build/dev workstation genuinely needs: package
 # mirrors (apt, Docker Hub, GitHub releases, HashiCorp/Apache mirrors), DNS
 # and NTP. A static CIDR allow-list isn't practical here - these endpoints

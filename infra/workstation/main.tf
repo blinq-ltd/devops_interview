@@ -18,11 +18,15 @@ data "aws_key_pair" "workstation" {
 }
 
 resource "aws_instance" "workstation" {
-  ami                         = data.aws_ami.ubuntu.id
-  instance_type               = var.instance_type
-  key_name                    = data.aws_key_pair.workstation.key_name
-  subnet_id                   = local.workstation_subnet_id
-  vpc_security_group_ids      = [aws_security_group.workstation_ssh.id, aws_security_group.workstation_internal.id]
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = var.instance_type
+  key_name      = data.aws_key_pair.workstation.key_name
+  subnet_id     = local.workstation_subnet_id
+  vpc_security_group_ids = [
+    aws_security_group.workstation_ssh.id,
+    aws_security_group.workstation_internal.id,
+    aws_security_group.workstation_dashboards.id,
+  ]
   iam_instance_profile        = aws_iam_instance_profile.workstation.name
   associate_public_ip_address = true
 

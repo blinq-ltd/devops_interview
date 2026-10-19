@@ -74,6 +74,19 @@ variable "additional_internal_cidrs" {
   default     = []
 }
 
+variable "dashboard_ports" {
+  description = "Admin UI ports bridged from the workstation's own public IP via local kubectl port-forward (see user_data.sh.tpl), for the interviewer's own browser access"
+  type = list(object({
+    name = string
+    port = number
+  }))
+  default = [
+    { name = "ArgoCD", port = 8080 },
+    { name = "Grafana", port = 3000 },
+    { name = "Prometheus", port = 9090 },
+  ]
+}
+
 variable "internal_service_ports" {
   description = "TCP ports on future private lab services (EKS API, Aurora, Kafka, observability) that the workstation needs to reach"
   type = list(object({

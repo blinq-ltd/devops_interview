@@ -129,6 +129,71 @@ step "kcat" bash -c 'apt-get install -y kafkacat || apt-get install -y kcat'
 # no Go toolchain here). apache2-utils' `ab`, installed above, covers the
 # "local load generator" requirement instead.
 
+### --- admin dashboard port-forwards (ArgoCD/Grafana/Prometheus UIs) ---
+# Persistent, not ad-hoc `nohup ... &` (those die the moment the SSH
+# session that started them ends - learned the hard way). Bound to
+# 0.0.0.0 so they're reachable via the workstation's own public IP on the
+# ports opened in network.tf's workstation_dashboards SG, restricted to
+# the same trusted IPs as SSH. Runs as ubuntu (its kubeconfig already has
+# cluster-admin). Restart=always: these targets (cluster, Argo, the
+# observability stack) may not exist yet at first boot - systemd just
+# keeps retrying until they do.
+step "dashboard-portforward-units" bash -c '
+cat > /etc/systemd/system/portforward-argocd.service <<UNIT
+[Unit]
+Description=kubectl port-forward: ArgoCD UI
+After=network-online.target
+
+[Service]
+User=ubuntu
+Environment=HOME=/home/ubuntu
+Environment=KUBECONFIG=/home/ubuntu/.kube/config
+ExecStart=/usr/local/bin/kubectl port-forward --address 0.0.0.0 -n argocd svc/argocd-server 8080:443
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+UNIT
+
+cat > /etc/systemd/system/portforward-grafana.service <<UNIT
+[Unit]
+Description=kubectl port-forward: Grafana UI
+After=network-online.target
+
+[Service]
+User=ubuntu
+Environment=HOME=/home/ubuntu
+Environment=KUBECONFIG=/home/ubuntu/.kube/config
+ExecStart=/usr/local/bin/kubectl port-forward --address 0.0.0.0 -n observability svc/kube-prometheus-stack-grafana 3000:80
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+UNIT
+
+cat > /etc/systemd/system/portforward-prometheus.service <<UNIT
+[Unit]
+Description=kubectl port-forward: Prometheus UI
+After=network-online.target
+
+[Service]
+User=ubuntu
+Environment=HOME=/home/ubuntu
+Environment=KUBECONFIG=/home/ubuntu/.kube/config
+ExecStart=/usr/local/bin/kubectl port-forward --address 0.0.0.0 -n observability svc/kube-prometheus-stack-prometheus 9090:9090
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+UNIT
+
+systemctl daemon-reload &&
+systemctl enable --now portforward-argocd.service portforward-grafana.service portforward-prometheus.service
+'
+
 ### --- welcome banner ---
 cat > /etc/motd <<'EOF'
 =====================================================================
@@ -137,6 +202,10 @@ cat > /etc/motd <<'EOF'
  eksctl, helm, terraform ${terraform_version}, argocd cli, k9s, stern,
  kcat/kafkacat, kafka CLI tools (/opt/kafka/bin), psql, ab (load gen)
  Repo: https://github.com/blinq-ltd/devops_interview
+ Dashboards (from this workstation's own public IP, trusted IPs only):
+   ArgoCD     https://<workstation-ip>:8080  (self-signed cert)
+   Grafana    http://<workstation-ip>:3000
+   Prometheus http://<workstation-ip>:9090
  Check /var/log/interview-bootstrap-warnings.log for any failed steps.
 =====================================================================
 EOF
