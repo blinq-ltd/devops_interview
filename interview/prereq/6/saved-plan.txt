@@ -1,0 +1,1022 @@
+module.vpc_peering[0].data.aws_route_table.workstation_main: Reading...
+data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_caller_identity.current[0]: Reading...
+module.vpc.data.aws_partition.current[0]: Reading...
+module.vpc.data.aws_region.current[0]: Reading...
+module.eks.data.aws_partition.current[0]: Reading...
+module.eks.data.aws_caller_identity.current[0]: Reading...
+module.eks.data.aws_iam_policy_document.assume_role_policy[0]: Reading...
+aws_kms_key.eks: Refreshing state... [id=29debef1-a1a0-4030-9f1f-d6b5172df3a1]
+aws_iam_service_linked_role.autoscaling[0]: Refreshing state... [id=arn:aws:iam::382163918348:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling]
+module.vpc.data.aws_partition.current[0]: Read complete after 0s [id=aws]
+module.eks.data.aws_partition.current[0]: Read complete after 0s [id=aws]
+module.vpc.data.aws_region.current[0]: Read complete after 0s [id=us-east-1]
+module.eks.data.aws_iam_policy_document.assume_role_policy[0]: Read complete after 0s [id=2830595799]
+module.vpc.data.aws_iam_policy_document.flow_log_cloudwatch_assume_role[0]: Reading...
+module.eks.aws_cloudwatch_log_group.this[0]: Refreshing state... [id=/aws/eks/interview/cluster]
+module.vpc.aws_vpc.this[0]: Refreshing state... [id=vpc-03904f253d30990d0]
+module.eks.aws_iam_role.this[0]: Refreshing state... [id=interview-cluster-40d7ddd5cdf06f6bbcff822950]
+module.vpc.data.aws_iam_policy_document.flow_log_cloudwatch_assume_role[0]: Read complete after 0s [id=1021377347]
+module.vpc.aws_iam_role.vpc_flow_log_cloudwatch[0]: Refreshing state... [id=vpc-flow-log-role-062b738aa5023762eef6fa59a7]
+data.aws_caller_identity.current: Read complete after 1s [id=382163918348]
+module.vpc.data.aws_caller_identity.current[0]: Read complete after 2s [id=382163918348]
+module.eks.data.aws_caller_identity.current[0]: Read complete after 3s [id=382163918348]
+module.eks.data.aws_iam_session_context.current[0]: Reading...
+module.eks.data.aws_iam_session_context.current[0]: Read complete after 0s [id=arn:aws:iam::382163918348:user/tapan_halani]
+aws_ecr_repository.generator: Refreshing state... [id=devops-interview-generator]
+aws_ecr_repository.api: Refreshing state... [id=devops-interview-api]
+module.eks.module.kms.data.aws_caller_identity.current[0]: Reading...
+module.eks.module.kms.data.aws_partition.current[0]: Reading...
+module.eks.module.kms.data.aws_partition.current[0]: Read complete after 0s [id=aws]
+module.eks.aws_iam_role_policy_attachment.this["AmazonEKSClusterPolicy"]: Refreshing state... [id=interview-cluster-40d7ddd5cdf06f6bbcff822950/arn:aws:iam::aws:policy/AmazonEKSClusterPolicy]
+data.aws_iam_policy_document.ebs: Reading...
+data.aws_iam_policy_document.ebs: Read complete after 0s [id=3281352358]
+aws_kms_key.ebs: Refreshing state... [id=ce73fc36-544c-4d1b-8356-40a0950bc1cd]
+module.eks.module.kms.data.aws_caller_identity.current[0]: Read complete after 1s [id=382163918348]
+module.eks.module.kms.data.aws_iam_policy_document.this[0]: Reading...
+module.eks.module.kms.data.aws_iam_policy_document.this[0]: Read complete after 0s [id=3140286916]
+module.eks.module.kms.aws_kms_key.this[0]: Refreshing state... [id=77633e6d-5f5a-43b4-b518-871983ef09a7]
+module.vpc_peering[0].data.aws_route_table.workstation_main: Read complete after 8s [id=rtb-04e286f374eff0332]
+aws_ecr_lifecycle_policy.generator: Refreshing state... [id=devops-interview-generator]
+aws_ecr_lifecycle_policy.api: Refreshing state... [id=devops-interview-api]
+module.vpc.aws_default_security_group.this[0]: Refreshing state... [id=sg-04264aa67736fd188]
+module.vpc.aws_default_route_table.default[0]: Refreshing state... [id=rtb-0337167f7d03b91d8]
+module.vpc_peering[0].aws_vpc_peering_connection.this: Refreshing state... [id=pcx-0cdf3c7adcdd8219d]
+module.vpc.aws_cloudwatch_log_group.flow_log[0]: Refreshing state... [id=/aws/vpc-flow-log/vpc-03904f253d30990d0]
+module.vpc.aws_default_network_acl.this[0]: Refreshing state... [id=acl-085edf2f6031872ed]
+module.eks.aws_security_group.cluster[0]: Refreshing state... [id=sg-088e7140159e644ec]
+module.eks.aws_security_group.node[0]: Refreshing state... [id=sg-00dde8fc56b00059e]
+module.vpc.aws_route_table.public[0]: Refreshing state... [id=rtb-0ac4b0a2fad8e2601]
+module.vpc.aws_internet_gateway.this[0]: Refreshing state... [id=igw-0f5b65e0d1682839a]
+module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-04a5a0e6720b16316]
+module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-039128c4091f44e8c]
+module.vpc.aws_subnet.public[2]: Refreshing state... [id=subnet-068797266f9bb2ec1]
+module.vpc.aws_subnet.private[2]: Refreshing state... [id=subnet-0884d89a5ca118542]
+module.vpc.aws_subnet.private[1]: Refreshing state... [id=subnet-0f428c7b9aaf7a18b]
+module.vpc.aws_subnet.private[0]: Refreshing state... [id=subnet-00421275dd4822e6a]
+module.vpc.aws_route_table.private[0]: Refreshing state... [id=rtb-057f796ee8ab63958]
+module.eks.module.kms.aws_kms_alias.this["cluster"]: Refreshing state... [id=alias/eks/interview]
+module.vpc_peering[0].aws_route.workstation_to_eks: Refreshing state... [id=r-rtb-04e286f374eff03322712796275]
+module.vpc.aws_eip.nat[0]: Refreshing state... [id=eipalloc-0d00367d7a191ae5f]
+module.vpc.aws_route.public_internet_gateway[0]: Refreshing state... [id=r-rtb-0ac4b0a2fad8e26011080289494]
+module.eks.aws_iam_policy.cluster_encryption[0]: Refreshing state... [id=arn:aws:iam::382163918348:policy/interview-cluster-ClusterEncryption5168224d1ffcfbdab47638e959]
+module.eks.aws_security_group_rule.node["ingress_self_all"]: Refreshing state... [id=sgrule-4020281477]
+module.eks.aws_security_group_rule.node["ingress_cluster_kubelet"]: Refreshing state... [id=sgrule-2052092930]
+module.eks.aws_security_group_rule.node["ingress_cluster_443"]: Refreshing state... [id=sgrule-933794162]
+module.eks.aws_security_group_rule.node["ingress_cluster_8443_webhook"]: Refreshing state... [id=sgrule-411317713]
+module.eks.aws_security_group_rule.node["ingress_self_coredns_tcp"]: Refreshing state... [id=sgrule-2000026624]
+module.eks.aws_security_group_rule.node["ingress_cluster_6443_webhook"]: Refreshing state... [id=sgrule-198707696]
+module.eks.aws_security_group_rule.node["ingress_cluster_4443_webhook"]: Refreshing state... [id=sgrule-3264900710]
+module.eks.aws_security_group_rule.node["ingress_self_coredns_udp"]: Refreshing state... [id=sgrule-3546963951]
+module.eks.aws_security_group_rule.node["egress_all"]: Refreshing state... [id=sgrule-1838453159]
+module.eks.aws_security_group_rule.node["ingress_cluster_9443_webhook"]: Refreshing state... [id=sgrule-2082801178]
+module.eks.aws_security_group_rule.node["ingress_cluster_10251_webhook"]: Refreshing state... [id=sgrule-1310270585]
+module.eks.aws_security_group_rule.node["ingress_nodes_ephemeral"]: Refreshing state... [id=sgrule-878501169]
+module.eks.aws_security_group_rule.cluster["ingress_nodes_443"]: Refreshing state... [id=sgrule-1341654585]
+module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-03bc4baa0a8f53373]
+module.vpc.aws_route_table_association.public[2]: Refreshing state... [id=rtbassoc-06990427f67d3ad26]
+module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0f68cd9caf3676a50]
+module.vpc.aws_route_table_association.private[0]: Refreshing state... [id=rtbassoc-0c4755f6cd18b153a]
+module.vpc.aws_route_table_association.private[1]: Refreshing state... [id=rtbassoc-0b163678a4d7e7e35]
+module.vpc.aws_route_table_association.private[2]: Refreshing state... [id=rtbassoc-053b24e134acfe7d6]
+module.eks.aws_iam_role_policy_attachment.cluster_encryption[0]: Refreshing state... [id=interview-cluster-40d7ddd5cdf06f6bbcff822950/arn:aws:iam::382163918348:policy/interview-cluster-ClusterEncryption5168224d1ffcfbdab47638e959]
+module.vpc_peering[0].aws_security_group_rule.api_from_workstation: Refreshing state... [id=sgrule-3819111343]
+module.vpc.data.aws_iam_policy_document.vpc_flow_log_cloudwatch[0]: Reading...
+module.vpc.data.aws_iam_policy_document.vpc_flow_log_cloudwatch[0]: Read complete after 0s [id=309109800]
+module.vpc.aws_flow_log.this[0]: Refreshing state... [id=fl-003b8fea25cdc66d5]
+module.vpc.aws_iam_policy.vpc_flow_log_cloudwatch[0]: Refreshing state... [id=arn:aws:iam::382163918348:policy/vpc-flow-log-to-cloudwatch-5b9c6000a31a6594981485c9fa]
+module.vpc_peering[0].aws_route.eks_to_workstation["0"]: Refreshing state... [id=r-rtb-057f796ee8ab639583854007479]
+module.eks.module.eks_managed_node_group["default"].data.aws_iam_policy_document.assume_role_policy[0]: Reading...
+module.eks.module.eks_managed_node_group["default"].data.aws_iam_policy_document.assume_role_policy[0]: Read complete after 0s [id=2560088296]
+module.eks.module.eks_managed_node_group["default"].aws_iam_role.this[0]: Refreshing state... [id=default-eks-node-group-d79d92bf02a259ccfc560d71ad]
+module.vpc.aws_nat_gateway.this[0]: Refreshing state... [id=nat-0821d9875267a626a]
+module.vpc.aws_iam_role_policy_attachment.vpc_flow_log_cloudwatch[0]: Refreshing state... [id=vpc-flow-log-role-062b738aa5023762eef6fa59a7/arn:aws:iam::382163918348:policy/vpc-flow-log-to-cloudwatch-5b9c6000a31a6594981485c9fa]
+module.vpc.aws_route.private_nat_gateway[0]: Refreshing state... [id=r-rtb-057f796ee8ab639581080289494]
+module.eks.module.eks_managed_node_group["default"].aws_iam_role_policy_attachment.this["AmazonEC2ContainerRegistryReadOnly"]: Refreshing state... [id=default-eks-node-group-d79d92bf02a259ccfc560d71ad/arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly]
+module.eks.module.eks_managed_node_group["default"].aws_iam_role_policy_attachment.this["AmazonEKS_CNI_Policy"]: Refreshing state... [id=default-eks-node-group-d79d92bf02a259ccfc560d71ad/arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy]
+module.eks.module.eks_managed_node_group["default"].aws_iam_role_policy_attachment.this["AmazonEKSWorkerNodePolicy"]: Refreshing state... [id=default-eks-node-group-d79d92bf02a259ccfc560d71ad/arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy]
+module.eks.aws_eks_cluster.this[0]: Refreshing state... [id=interview]
+module.eks.aws_ec2_tag.cluster_primary_security_group["Component"]: Refreshing state... [id=sg-083727ee4fb675127,Component]
+module.eks.aws_ec2_tag.cluster_primary_security_group["ManagedBy"]: Refreshing state... [id=sg-083727ee4fb675127,ManagedBy]
+module.eks.aws_ec2_tag.cluster_primary_security_group["Project"]: Refreshing state... [id=sg-083727ee4fb675127,Project]
+module.eks.aws_eks_access_entry.this["admin-1"]: Refreshing state... [id=interview:arn:aws:iam::382163918348:role/devops-interview-workstation-candidate-role]
+module.eks.aws_eks_access_entry.this["admin-0"]: Refreshing state... [id=interview:arn:aws:iam::382163918348:user/tapan_halani]
+module.eks.aws_iam_openid_connect_provider.oidc_provider[0]: Refreshing state... [id=arn:aws:iam::382163918348:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/030377D04F0448BE91DC63EEE8B07D32]
+module.eks.time_sleep.this[0]: Refreshing state... [id=2026-10-18T23:55:16Z]
+module.eks.module.eks_managed_node_group["default"].module.user_data.null_resource.validate_cluster_service_cidr: Refreshing state... [id=7874216068343399560]
+module.eks.module.eks_managed_node_group["default"].data.aws_ssm_parameter.ami[0]: Reading...
+module.eks.module.eks_managed_node_group["default"].aws_launch_template.this[0]: Refreshing state... [id=lt-0b72b5b29c0609b5b]
+data.aws_iam_policy_document.ebs_csi_driver_assume_role: Reading...
+data.aws_iam_policy_document.ebs_csi_driver_assume_role: Read complete after 0s [id=782158092]
+aws_iam_role.ebs_csi_driver: Refreshing state... [id=interview-ebs-csi-driver]
+module.eks.aws_eks_access_policy_association.this["admin-1_admin"]: Refreshing state... [id=interview#arn:aws:iam::382163918348:role/devops-interview-workstation-candidate-role#arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy]
+module.eks.aws_eks_access_policy_association.this["admin-0_admin"]: Refreshing state... [id=interview#arn:aws:iam::382163918348:user/tapan_halani#arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy]
+module.eks.module.eks_managed_node_group["default"].data.aws_ssm_parameter.ami[0]: Read complete after 3s [id=/aws/service/eks/optimized-ami/1.36/amazon-linux-2023/x86_64/standard/recommended/release_version]
+module.eks.module.eks_managed_node_group["default"].aws_eks_node_group.this[0]: Refreshing state... [id=interview:default-30a2c78c501dd27dd0d6d5e00f]
+aws_iam_role_policy_attachment.ebs_csi_driver: Refreshing state... [id=interview-ebs-csi-driver/arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy]
+aws_iam_role_policy.ebs_csi_driver_kms: Refreshing state... [id=interview-ebs-csi-driver:interview-ebs-csi-driver-kms]
+module.eks.aws_eks_addon.before_compute["kube-proxy"]: Refreshing state... [id=interview:kube-proxy]
+module.eks.aws_eks_addon.before_compute["vpc-cni"]: Refreshing state... [id=interview:vpc-cni]
+module.eks.aws_eks_addon.this["coredns"]: Refreshing state... [id=interview:coredns]
+module.eks.aws_eks_addon.this["aws-ebs-csi-driver"]: Refreshing state... [id=interview:aws-ebs-csi-driver]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+  ~ update in-place
++/- create replacement and then destroy
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+  # aws_ecr_repository.api will be updated in-place
+  ~ resource "aws_ecr_repository" "api" {
+        id                   = "devops-interview-api"
+        name                 = "devops-interview-api"
+      ~ tags                 = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all             = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (5 unchanged attributes hidden)
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # aws_ecr_repository.generator will be updated in-place
+  ~ resource "aws_ecr_repository" "generator" {
+        id                   = "devops-interview-generator"
+        name                 = "devops-interview-generator"
+      ~ tags                 = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all             = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (5 unchanged attributes hidden)
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # aws_iam_role.ebs_csi_driver will be updated in-place
+  ~ resource "aws_iam_role" "ebs_csi_driver" {
+        id                    = "interview-ebs-csi-driver"
+        name                  = "interview-ebs-csi-driver"
+      ~ tags                  = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all              = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (11 unchanged attributes hidden)
+
+        # (1 unchanged block hidden)
+    }
+
+  # aws_kms_key.ebs will be updated in-place
+  ~ resource "aws_kms_key" "ebs" {
+        id                                 = "ce73fc36-544c-4d1b-8356-40a0950bc1cd"
+      ~ tags                               = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all                           = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (15 unchanged attributes hidden)
+    }
+
+  # aws_kms_key.eks will be updated in-place
+  ~ resource "aws_kms_key" "eks" {
+        id                                 = "29debef1-a1a0-4030-9f1f-d6b5172df3a1"
+      ~ tags                               = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all                           = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (15 unchanged attributes hidden)
+    }
+
+  # module.eks.data.aws_eks_addon_version.this["aws-ebs-csi-driver"] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_eks_addon_version" "this" {
+      + addon_name         = "aws-ebs-csi-driver"
+      + id                 = (known after apply)
+      + kubernetes_version = "1.36"
+      + most_recent        = true
+      + region             = (known after apply)
+      + version            = (known after apply)
+    }
+
+  # module.eks.data.aws_eks_addon_version.this["coredns"] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_eks_addon_version" "this" {
+      + addon_name         = "coredns"
+      + id                 = (known after apply)
+      + kubernetes_version = "1.36"
+      + most_recent        = true
+      + region             = (known after apply)
+      + version            = (known after apply)
+    }
+
+  # module.eks.data.aws_eks_addon_version.this["kube-proxy"] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_eks_addon_version" "this" {
+      + addon_name         = "kube-proxy"
+      + id                 = (known after apply)
+      + kubernetes_version = "1.36"
+      + most_recent        = true
+      + region             = (known after apply)
+      + version            = (known after apply)
+    }
+
+  # module.eks.data.aws_eks_addon_version.this["vpc-cni"] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_eks_addon_version" "this" {
+      + addon_name         = "vpc-cni"
+      + id                 = (known after apply)
+      + kubernetes_version = "1.36"
+      + most_recent        = true
+      + region             = (known after apply)
+      + version            = (known after apply)
+    }
+
+  # module.eks.data.tls_certificate.this[0] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "tls_certificate" "this" {
+      + certificates = (known after apply)
+      + id           = (known after apply)
+      + url          = "https://oidc.eks.us-east-1.amazonaws.com/id/030377D04F0448BE91DC63EEE8B07D32"
+    }
+
+  # module.eks.aws_cloudwatch_log_group.this[0] will be updated in-place
+  ~ resource "aws_cloudwatch_log_group" "this" {
+        id                          = "/aws/eks/interview/cluster"
+        name                        = "/aws/eks/interview/cluster"
+      ~ tags                        = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Name"       = "/aws/eks/interview/cluster"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all                    = {
+          + "CostCenter" = "platform-eng"
+            # (5 unchanged elements hidden)
+        }
+        # (8 unchanged attributes hidden)
+    }
+
+  # module.eks.aws_ec2_tag.cluster_primary_security_group["CostCenter"] will be created
+  + resource "aws_ec2_tag" "cluster_primary_security_group" {
+      + id          = (known after apply)
+      + key         = "CostCenter"
+      + region      = "us-east-1"
+      + resource_id = "sg-083727ee4fb675127"
+      + value       = "platform-eng"
+    }
+
+  # module.eks.aws_eks_access_entry.this["admin-0"] will be updated in-place
+  ~ resource "aws_eks_access_entry" "this" {
+        id                = "interview:arn:aws:iam::382163918348:user/tapan_halani"
+      ~ tags              = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all          = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (9 unchanged attributes hidden)
+    }
+
+  # module.eks.aws_eks_access_entry.this["admin-1"] will be updated in-place
+  ~ resource "aws_eks_access_entry" "this" {
+        id                = "interview:arn:aws:iam::382163918348:role/devops-interview-workstation-candidate-role"
+      ~ tags              = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all          = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (9 unchanged attributes hidden)
+    }
+
+  # module.eks.aws_eks_addon.before_compute["kube-proxy"] will be updated in-place
+  ~ resource "aws_eks_addon" "before_compute" {
+      ~ addon_version               = "v1.36.0-eksbuild.48" -> (known after apply)
+        id                          = "interview:kube-proxy"
+      ~ tags                        = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all                    = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (11 unchanged attributes hidden)
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # module.eks.aws_eks_addon.before_compute["vpc-cni"] will be updated in-place
+  ~ resource "aws_eks_addon" "before_compute" {
+      ~ addon_version               = "v1.23.2-eksbuild.3" -> (known after apply)
+        id                          = "interview:vpc-cni"
+      ~ tags                        = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all                    = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (11 unchanged attributes hidden)
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # module.eks.aws_eks_addon.this["aws-ebs-csi-driver"] will be updated in-place
+  ~ resource "aws_eks_addon" "this" {
+      ~ addon_version               = "v1.67.0-eksbuild.1" -> (known after apply)
+        id                          = "interview:aws-ebs-csi-driver"
+      ~ tags                        = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all                    = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (11 unchanged attributes hidden)
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # module.eks.aws_eks_addon.this["coredns"] will be updated in-place
+  ~ resource "aws_eks_addon" "this" {
+      ~ addon_version               = "v1.14.7-eksbuild.11" -> (known after apply)
+        id                          = "interview:coredns"
+      ~ tags                        = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all                    = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (11 unchanged attributes hidden)
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # module.eks.aws_eks_cluster.this[0] will be updated in-place
+  ~ resource "aws_eks_cluster" "this" {
+        id                            = "interview"
+        name                          = "interview"
+      ~ tags                          = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all                      = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (13 unchanged attributes hidden)
+
+        # (11 unchanged blocks hidden)
+    }
+
+  # module.eks.aws_iam_openid_connect_provider.oidc_provider[0] will be updated in-place
+  ~ resource "aws_iam_openid_connect_provider" "oidc_provider" {
+        id              = "arn:aws:iam::382163918348:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/030377D04F0448BE91DC63EEE8B07D32"
+      ~ tags            = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Name"       = "interview-eks-irsa"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all        = {
+          + "CostCenter" = "platform-eng"
+            # (5 unchanged elements hidden)
+        }
+      ~ thumbprint_list = [
+          - "06b25927c42a721631c1efd9431e648fa62e1e39",
+        ] -> (known after apply)
+        # (3 unchanged attributes hidden)
+    }
+
+  # module.eks.aws_iam_policy.cluster_encryption[0] will be updated in-place
+  ~ resource "aws_iam_policy" "cluster_encryption" {
+        id               = "arn:aws:iam::382163918348:policy/interview-cluster-ClusterEncryption5168224d1ffcfbdab47638e959"
+        name             = "interview-cluster-ClusterEncryption5168224d1ffcfbdab47638e959"
+      ~ tags             = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all         = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (7 unchanged attributes hidden)
+    }
+
+  # module.eks.aws_iam_role.this[0] will be updated in-place
+  ~ resource "aws_iam_role" "this" {
+        id                    = "interview-cluster-40d7ddd5cdf06f6bbcff822950"
+        name                  = "interview-cluster-40d7ddd5cdf06f6bbcff822950"
+      ~ tags                  = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all              = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (11 unchanged attributes hidden)
+    }
+
+  # module.eks.aws_security_group.cluster[0] will be updated in-place
+  ~ resource "aws_security_group" "cluster" {
+        id                     = "sg-088e7140159e644ec"
+        name                   = "interview-cluster-b95618a8e77a2243888ecaa1af"
+      ~ tags                   = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Name"       = "interview-cluster"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all               = {
+          + "CostCenter" = "platform-eng"
+            # (5 unchanged elements hidden)
+        }
+        # (9 unchanged attributes hidden)
+    }
+
+  # module.eks.aws_security_group.node[0] will be updated in-place
+  ~ resource "aws_security_group" "node" {
+        id                     = "sg-00dde8fc56b00059e"
+        name                   = "interview-node-bc2eee21e2404359bad5004150"
+      ~ tags                   = {
+            "Component"                       = "eks"
+          + "CostCenter"                      = "platform-eng"
+            "ManagedBy"                       = "terraform"
+            "Name"                            = "interview-node"
+            "Project"                         = "devops-interview"
+            "kubernetes.io/cluster/interview" = "owned"
+        }
+      ~ tags_all               = {
+          + "CostCenter"                      = "platform-eng"
+            # (6 unchanged elements hidden)
+        }
+        # (9 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_cloudwatch_log_group.flow_log[0] will be updated in-place
+  ~ resource "aws_cloudwatch_log_group" "flow_log" {
+        id                          = "/aws/vpc-flow-log/vpc-03904f253d30990d0"
+        name                        = "/aws/vpc-flow-log/vpc-03904f253d30990d0"
+      ~ tags                        = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all                    = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (8 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_default_network_acl.this[0] will be updated in-place
+  ~ resource "aws_default_network_acl" "this" {
+        id                     = "acl-085edf2f6031872ed"
+      ~ tags                   = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Name"       = "interview-vpc-default"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all               = {
+          + "CostCenter" = "platform-eng"
+            # (5 unchanged elements hidden)
+        }
+        # (6 unchanged attributes hidden)
+
+        # (4 unchanged blocks hidden)
+    }
+
+  # module.vpc.aws_default_route_table.default[0] will be updated in-place
+  ~ resource "aws_default_route_table" "default" {
+        id                     = "rtb-0337167f7d03b91d8"
+      ~ tags                   = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Name"       = "interview-vpc-default"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all               = {
+          + "CostCenter" = "platform-eng"
+            # (5 unchanged elements hidden)
+        }
+        # (7 unchanged attributes hidden)
+
+        # (1 unchanged block hidden)
+    }
+
+  # module.vpc.aws_default_security_group.this[0] will be updated in-place
+  ~ resource "aws_default_security_group" "this" {
+        id                     = "sg-04264aa67736fd188"
+        name                   = "default"
+      ~ tags                   = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Name"       = "interview-vpc-default"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all               = {
+          + "CostCenter" = "platform-eng"
+            # (5 unchanged elements hidden)
+        }
+        # (9 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_eip.nat[0] will be updated in-place
+  ~ resource "aws_eip" "nat" {
+        id                       = "eipalloc-0d00367d7a191ae5f"
+      ~ tags                     = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Name"       = "interview-vpc-us-east-1a"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all                 = {
+          + "CostCenter" = "platform-eng"
+            # (5 unchanged elements hidden)
+        }
+        # (18 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_flow_log.this[0] will be updated in-place
+  ~ resource "aws_flow_log" "this" {
+        id                         = "fl-003b8fea25cdc66d5"
+      ~ tags                       = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all                   = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (10 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_iam_policy.vpc_flow_log_cloudwatch[0] will be updated in-place
+  ~ resource "aws_iam_policy" "vpc_flow_log_cloudwatch" {
+        id               = "arn:aws:iam::382163918348:policy/vpc-flow-log-to-cloudwatch-5b9c6000a31a6594981485c9fa"
+        name             = "vpc-flow-log-to-cloudwatch-5b9c6000a31a6594981485c9fa"
+      ~ tags             = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all         = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (7 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_iam_role.vpc_flow_log_cloudwatch[0] will be updated in-place
+  ~ resource "aws_iam_role" "vpc_flow_log_cloudwatch" {
+        id                    = "vpc-flow-log-role-062b738aa5023762eef6fa59a7"
+        name                  = "vpc-flow-log-role-062b738aa5023762eef6fa59a7"
+      ~ tags                  = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all              = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (11 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_internet_gateway.this[0] will be updated in-place
+  ~ resource "aws_internet_gateway" "this" {
+        id       = "igw-0f5b65e0d1682839a"
+      ~ tags     = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Name"       = "interview-vpc"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all = {
+          + "CostCenter" = "platform-eng"
+            # (5 unchanged elements hidden)
+        }
+        # (4 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_nat_gateway.this[0] will be updated in-place
+  ~ resource "aws_nat_gateway" "this" {
+        id                                 = "nat-0821d9875267a626a"
+      ~ tags                               = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Name"       = "interview-vpc-us-east-1a"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all                           = {
+          + "CostCenter" = "platform-eng"
+            # (5 unchanged elements hidden)
+        }
+        # (14 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_route_table.private[0] will be updated in-place
+  ~ resource "aws_route_table" "private" {
+        id               = "rtb-057f796ee8ab63958"
+      ~ tags             = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Name"       = "interview-vpc-private"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all         = {
+          + "CostCenter" = "platform-eng"
+            # (5 unchanged elements hidden)
+        }
+        # (6 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_route_table.public[0] will be updated in-place
+  ~ resource "aws_route_table" "public" {
+        id               = "rtb-0ac4b0a2fad8e2601"
+      ~ tags             = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Name"       = "interview-vpc-public"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all         = {
+          + "CostCenter" = "platform-eng"
+            # (5 unchanged elements hidden)
+        }
+        # (6 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_subnet.private[0] will be updated in-place
+  ~ resource "aws_subnet" "private" {
+        id                                             = "subnet-00421275dd4822e6a"
+      ~ tags                                           = {
+            "Component"                       = "eks"
+          + "CostCenter"                      = "platform-eng"
+            "ManagedBy"                       = "terraform"
+            "Name"                            = "interview-vpc-private-us-east-1a"
+            "Project"                         = "devops-interview"
+            "kubernetes.io/cluster/interview" = "shared"
+            "kubernetes.io/role/internal-elb" = "1"
+        }
+      ~ tags_all                                       = {
+          + "CostCenter"                      = "platform-eng"
+            # (7 unchanged elements hidden)
+        }
+        # (20 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_subnet.private[1] will be updated in-place
+  ~ resource "aws_subnet" "private" {
+        id                                             = "subnet-0f428c7b9aaf7a18b"
+      ~ tags                                           = {
+            "Component"                       = "eks"
+          + "CostCenter"                      = "platform-eng"
+            "ManagedBy"                       = "terraform"
+            "Name"                            = "interview-vpc-private-us-east-1b"
+            "Project"                         = "devops-interview"
+            "kubernetes.io/cluster/interview" = "shared"
+            "kubernetes.io/role/internal-elb" = "1"
+        }
+      ~ tags_all                                       = {
+          + "CostCenter"                      = "platform-eng"
+            # (7 unchanged elements hidden)
+        }
+        # (20 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_subnet.private[2] will be updated in-place
+  ~ resource "aws_subnet" "private" {
+        id                                             = "subnet-0884d89a5ca118542"
+      ~ tags                                           = {
+            "Component"                       = "eks"
+          + "CostCenter"                      = "platform-eng"
+            "ManagedBy"                       = "terraform"
+            "Name"                            = "interview-vpc-private-us-east-1c"
+            "Project"                         = "devops-interview"
+            "kubernetes.io/cluster/interview" = "shared"
+            "kubernetes.io/role/internal-elb" = "1"
+        }
+      ~ tags_all                                       = {
+          + "CostCenter"                      = "platform-eng"
+            # (7 unchanged elements hidden)
+        }
+        # (20 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_subnet.public[0] will be updated in-place
+  ~ resource "aws_subnet" "public" {
+        id                                             = "subnet-039128c4091f44e8c"
+      ~ tags                                           = {
+            "Component"                       = "eks"
+          + "CostCenter"                      = "platform-eng"
+            "ManagedBy"                       = "terraform"
+            "Name"                            = "interview-vpc-public-us-east-1a"
+            "Project"                         = "devops-interview"
+            "kubernetes.io/cluster/interview" = "shared"
+            "kubernetes.io/role/elb"          = "1"
+        }
+      ~ tags_all                                       = {
+          + "CostCenter"                      = "platform-eng"
+            # (7 unchanged elements hidden)
+        }
+        # (20 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_subnet.public[1] will be updated in-place
+  ~ resource "aws_subnet" "public" {
+        id                                             = "subnet-04a5a0e6720b16316"
+      ~ tags                                           = {
+            "Component"                       = "eks"
+          + "CostCenter"                      = "platform-eng"
+            "ManagedBy"                       = "terraform"
+            "Name"                            = "interview-vpc-public-us-east-1b"
+            "Project"                         = "devops-interview"
+            "kubernetes.io/cluster/interview" = "shared"
+            "kubernetes.io/role/elb"          = "1"
+        }
+      ~ tags_all                                       = {
+          + "CostCenter"                      = "platform-eng"
+            # (7 unchanged elements hidden)
+        }
+        # (20 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_subnet.public[2] will be updated in-place
+  ~ resource "aws_subnet" "public" {
+        id                                             = "subnet-068797266f9bb2ec1"
+      ~ tags                                           = {
+            "Component"                       = "eks"
+          + "CostCenter"                      = "platform-eng"
+            "ManagedBy"                       = "terraform"
+            "Name"                            = "interview-vpc-public-us-east-1c"
+            "Project"                         = "devops-interview"
+            "kubernetes.io/cluster/interview" = "shared"
+            "kubernetes.io/role/elb"          = "1"
+        }
+      ~ tags_all                                       = {
+          + "CostCenter"                      = "platform-eng"
+            # (7 unchanged elements hidden)
+        }
+        # (20 unchanged attributes hidden)
+    }
+
+  # module.vpc.aws_vpc.this[0] will be updated in-place
+  ~ resource "aws_vpc" "this" {
+        id                                   = "vpc-03904f253d30990d0"
+      ~ tags                                 = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Name"       = "interview-vpc"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all                             = {
+          + "CostCenter" = "platform-eng"
+            # (5 unchanged elements hidden)
+        }
+        # (19 unchanged attributes hidden)
+    }
+
+  # module.vpc_peering[0].aws_vpc_peering_connection.this will be updated in-place
+  ~ resource "aws_vpc_peering_connection" "this" {
+        id            = "pcx-0cdf3c7adcdd8219d"
+      ~ tags          = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Name"       = "interview-workstation-peering"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all      = {
+          + "CostCenter" = "platform-eng"
+            # (5 unchanged elements hidden)
+        }
+        # (7 unchanged attributes hidden)
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # module.eks.module.eks_managed_node_group["default"].aws_eks_node_group.this[0] must be replaced
++/- resource "aws_eks_node_group" "this" {
+      ~ arn                    = "arn:aws:eks:us-east-1:382163918348:nodegroup/interview/default-30a2c78c501dd27dd0d6d5e00f/42d0a95f-c5ea-1ee8-a185-08df29fb6a34" -> (known after apply)
+      ~ capacity_type          = "ON_DEMAND" -> "SPOT" # forces replacement
+      ~ disk_size              = 0 -> (known after apply)
+      ~ id                     = "interview:default-30a2c78c501dd27dd0d6d5e00f" -> (known after apply)
+      - labels                 = {} -> null
+      ~ node_group_name        = "default-30a2c78c501dd27dd0d6d5e00f" -> (known after apply)
+      ~ resources              = [
+          - {
+              - autoscaling_groups              = [
+                  - {
+                      - name = "eks-default-30a2c78c501dd27dd0d6d5e00f-42d0a95f-c5ea-1ee8-a185-08df29fb6a34"
+                    },
+                ]
+                # (1 unchanged attribute hidden)
+            },
+        ] -> (known after apply)
+      ~ status                 = "ACTIVE" -> (known after apply)
+      ~ tags                   = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Name"       = "default"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all               = {
+          + "CostCenter" = "platform-eng"
+            # (5 unchanged elements hidden)
+        }
+        # (9 unchanged attributes hidden)
+
+      ~ launch_template {
+            id      = "lt-0b72b5b29c0609b5b"
+          ~ name    = "default-1898ea4f9b88b1f0519341bded" -> (known after apply)
+          ~ version = "1" -> (known after apply)
+        }
+
+      ~ node_repair_config (known after apply)
+
+      ~ update_config {
+          - max_unavailable            = 0 -> null
+            # (2 unchanged attributes hidden)
+        }
+
+        # (1 unchanged block hidden)
+    }
+
+  # module.eks.module.eks_managed_node_group["default"].aws_iam_role.this[0] will be updated in-place
+  ~ resource "aws_iam_role" "this" {
+        id                    = "default-eks-node-group-d79d92bf02a259ccfc560d71ad"
+        name                  = "default-eks-node-group-d79d92bf02a259ccfc560d71ad"
+      ~ tags                  = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all              = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (11 unchanged attributes hidden)
+    }
+
+  # module.eks.module.eks_managed_node_group["default"].aws_launch_template.this[0] will be updated in-place
+  ~ resource "aws_launch_template" "this" {
+      ~ default_version                      = 1 -> (known after apply)
+        id                                   = "lt-0b72b5b29c0609b5b"
+      ~ latest_version                       = 1 -> (known after apply)
+        name                                 = "default-1898ea4f9b88b1f0519341bded"
+      ~ tags                                 = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all                             = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (17 unchanged attributes hidden)
+
+      ~ tag_specifications {
+          ~ tags          = {
+                "Component"  = "eks"
+              + "CostCenter" = "platform-eng"
+                "ManagedBy"  = "terraform"
+                "Name"       = "default"
+                "Project"    = "devops-interview"
+            }
+            # (1 unchanged attribute hidden)
+        }
+      ~ tag_specifications {
+          ~ tags          = {
+                "Component"  = "eks"
+              + "CostCenter" = "platform-eng"
+                "ManagedBy"  = "terraform"
+                "Name"       = "default"
+                "Project"    = "devops-interview"
+            }
+            # (1 unchanged attribute hidden)
+        }
+      ~ tag_specifications {
+          ~ tags          = {
+                "Component"  = "eks"
+              + "CostCenter" = "platform-eng"
+                "ManagedBy"  = "terraform"
+                "Name"       = "default"
+                "Project"    = "devops-interview"
+            }
+            # (1 unchanged attribute hidden)
+        }
+
+        # (3 unchanged blocks hidden)
+    }
+
+  # module.eks.module.kms.aws_kms_key.this[0] will be updated in-place
+  ~ resource "aws_kms_key" "this" {
+        id                                 = "77633e6d-5f5a-43b4-b518-871983ef09a7"
+      ~ tags                               = {
+            "Component"  = "eks"
+          + "CostCenter" = "platform-eng"
+            "ManagedBy"  = "terraform"
+            "Project"    = "devops-interview"
+        }
+      ~ tags_all                           = {
+          + "CostCenter" = "platform-eng"
+            # (4 unchanged elements hidden)
+        }
+        # (14 unchanged attributes hidden)
+    }
+
+Plan: 2 to add, 41 to change, 1 to destroy.
+
+Warning: Deprecated attribute
+
+  on .terraform/modules/vpc/vpc-flow-logs.tf line 28, in locals:
+  28:     "arn:${data.aws_partition.current[0].partition}:logs:${data.aws_region.current[0].name}:${data.aws_caller_identity.current[0].account_id}:log-group:${log_group.name}:*"
+
+The attribute "name" is deprecated. Refer to the provider documentation for
+details.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
