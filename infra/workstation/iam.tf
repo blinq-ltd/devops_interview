@@ -95,7 +95,6 @@ data "aws_iam_policy_document" "workstation_candidate" {
     sid = "EksDescribeScoped"
     actions = [
       "eks:DescribeCluster",
-      "eks:ListClusters",
       "eks:DescribeNodegroup",
       "eks:ListNodegroups",
       "eks:ListUpdates",
@@ -106,6 +105,16 @@ data "aws_iam_policy_document" "workstation_candidate" {
       "arn:aws:eks:${var.aws_region}:${data.aws_caller_identity.current.account_id}:cluster/${var.eks_cluster_name}",
       "arn:aws:eks:${var.aws_region}:${data.aws_caller_identity.current.account_id}:nodegroup/${var.eks_cluster_name}/*/*",
     ]
+  }
+
+  # eks:ListClusters has no resource-level ARN support (AWS requires
+  # Resource "*" for it, same as eks:DescribeClusterVersions) - it was
+  # previously (ineffectively) included in the scoped statement above, which
+  # silently never granted it. Discovered live via a candidate's AccessDenied.
+  statement {
+    sid       = "EksListClustersUnscoped"
+    actions   = ["eks:ListClusters"]
+    resources = ["*"]
   }
 
   # RDS: describe only; actual DB auth happens via a lab-issued DB role/password, not IAM.

@@ -94,6 +94,25 @@ resource "aws_iam_user_policy" "candidate_eks_readonly_base" {
   policy = data.aws_iam_policy_document.candidate_eks_readonly_base.json
 }
 
+# Full EKS API access on the base identity, after repeated one-at-a-time
+# AccessDenied errors (DescribeClusterVersions, ListClusters, ...) from
+# whatever tooling calls AWS directly instead of through an assumed role.
+# Kubernetes RBAC (actual kubectl access) is unaffected either way - that
+# still depends solely on the EKS access entry for the assumed workstation
+# role, not on this IAM policy.
+data "aws_iam_policy_document" "candidate_eks_full" {
+  statement {
+    actions   = ["eks:*"]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_user_policy" "candidate_eks_full" {
+  name   = "eks-full-access"
+  user   = aws_iam_user.candidate.name
+  policy = data.aws_iam_policy_document.candidate_eks_full.json
+}
+
 # The same permissions the workstation role had, attached directly to the
 # base candidate user - so any client calling AWS APIs under the base
 # identity (not through sts:AssumeRole) has the access the workstation
