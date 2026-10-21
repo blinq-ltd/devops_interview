@@ -94,6 +94,17 @@ resource "aws_iam_user_policy" "candidate_eks_readonly_base" {
   policy = data.aws_iam_policy_document.candidate_eks_readonly_base.json
 }
 
+# The same permissions the workstation role had, attached directly to the
+# base candidate user - so any client calling AWS APIs under the base
+# identity (not through sts:AssumeRole) has the access the workstation
+# instance used to provide, instead of surfacing as one-at-a-time
+# AccessDenied errors.
+resource "aws_iam_user_policy_attachment" "candidate_workstation_policy" {
+  count      = var.workstation_candidate_policy_arn != "" ? 1 : 0
+  user       = aws_iam_user.candidate.name
+  policy_arn = var.workstation_candidate_policy_arn
+}
+
 resource "aws_iam_role_policy" "candidate_ec2_eks" {
   name   = "ec2-eks"
   role   = aws_iam_role.candidate.id

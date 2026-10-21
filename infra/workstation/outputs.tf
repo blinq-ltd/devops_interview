@@ -17,6 +17,11 @@ output "candidate_ssh_config" {
   value       = var.enable_workstation_instance ? local.candidate_ssh_config : null
 }
 
+output "workstation_candidate_policy_arn" {
+  description = "Standalone copy of the workstation role's scoped policy, for infra/candidate-access to attach directly to the candidate IAM user"
+  value       = aws_iam_policy.workstation_candidate.arn
+}
+
 output "workstation_iam_role_arn" {
   description = "IAM role (kept regardless of enable_workstation_instance - reference this for EKS access entries and for infra/candidate-access's workstation_role_arn, which lets the candidate user assume it directly)"
   value       = aws_iam_role.workstation.arn

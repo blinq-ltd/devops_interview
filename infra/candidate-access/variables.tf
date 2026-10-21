@@ -24,3 +24,9 @@ variable "workstation_role_arn" {
   type        = string
   default     = ""
 }
+
+variable "workstation_candidate_policy_arn" {
+  description = "ARN of infra/workstation's standalone candidate policy (output workstation_candidate_policy_arn) - the same permissions the workstation role had, attached directly to the candidate user so base-identity API calls (tools that don't assume a role) work too."
+  type        = string
+  default     = ""
+}

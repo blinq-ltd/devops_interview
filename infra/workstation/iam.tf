@@ -140,6 +140,16 @@ resource "aws_iam_role_policy" "workstation_candidate" {
   policy = data.aws_iam_policy_document.workstation_candidate.json
 }
 
+# Standalone copy of the same policy, attachable directly to the candidate
+# IAM user (infra/candidate-access) so base-identity API calls (tools that
+# don't go through this role's sts:AssumeRole flow) have the same access the
+# workstation instance used to have, instead of discovering gaps one
+# AccessDenied at a time.
+resource "aws_iam_policy" "workstation_candidate" {
+  name   = "${var.name_prefix}-candidate-scoped-access-standalone"
+  policy = data.aws_iam_policy_document.workstation_candidate.json
+}
+
 resource "aws_iam_instance_profile" "workstation" {
   name = "${var.name_prefix}-workstation"
   role = aws_iam_role.workstation.name
