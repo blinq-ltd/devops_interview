@@ -13,10 +13,27 @@
 
 data "aws_iam_policy_document" "workstation_assume_role" {
   statement {
+    sid     = "Ec2InstanceProfile"
     actions = ["sts:AssumeRole"]
     principals {
       type        = "Service"
       identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+
+  # Lets the candidate IAM user (infra/candidate-access) assume this role
+  # directly for local kubectl/docker access, now that the candidate
+  # connects straight to the CIDR-restricted public EKS endpoint instead of
+  # SSHing into a workstation running under this role's instance profile.
+  dynamic "statement" {
+    for_each = length(var.candidate_user_arns) > 0 ? [1] : []
+    content {
+      sid     = "DirectCandidateAccess"
+      actions = ["sts:AssumeRole"]
+      principals {
+        type        = "AWS"
+        identifiers = var.candidate_user_arns
+      }
     }
   }
 }

@@ -24,6 +24,7 @@ locals {
 # outbound traffic for the instance is governed by workstation_internal's
 # scoped egress below, since the instance has both SGs attached.
 resource "aws_security_group" "workstation_ssh" {
+  count       = var.enable_workstation_instance ? 1 : 0
   name        = "${var.name_prefix}-workstation-ssh"
   description = "SSH access to the candidate workstation"
   vpc_id      = data.aws_vpc.default.id
@@ -48,6 +49,7 @@ resource "aws_security_group" "workstation_ssh" {
 # in-cluster Services. Scoped to the same trusted IPs as SSH, not the
 # whole internet - these are admin-level control planes (ArgoCD especially).
 resource "aws_security_group" "workstation_dashboards" {
+  count       = var.enable_workstation_instance ? 1 : 0
   name        = "${var.name_prefix}-workstation-dashboards"
   description = "ArgoCD/Grafana/Prometheus UI access from trusted IPs, bridged by local kubectl port-forward"
   vpc_id      = data.aws_vpc.default.id
@@ -92,6 +94,7 @@ locals {
 # time by referencing `aws_security_group.workstation_internal.id` as a
 # source in those modules' security groups.
 resource "aws_security_group" "workstation_internal" {
+  count       = var.enable_workstation_instance ? 1 : 0
   name        = "${var.name_prefix}-workstation-internal"
   description = "Identity SG for the candidate workstation; referenced as an allowed source by private lab services (EKS, Aurora, Kafka, observability)"
   vpc_id      = data.aws_vpc.default.id

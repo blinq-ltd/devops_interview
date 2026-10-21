@@ -31,7 +31,7 @@ output "public_subnet_ids" {
 }
 
 output "update_kubeconfig_command" {
-  description = "Run this ON THE WORKSTATION (not locally - the API is private) to configure kubectl. The workstation's instance profile supplies credentials automatically, so no --profile flag is needed there."
+  description = "Candidates run this locally (with AWS_PROFILE set to the candidate-cluster profile from infra/candidate-access's aws_cli_profile_snippet output) to configure kubectl against the CIDR-restricted public endpoint."
   value       = "aws eks update-kubeconfig --name ${module.eks.cluster_name} --region ${var.aws_region}"
 }
 

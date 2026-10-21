@@ -51,6 +51,28 @@ resource "aws_iam_user_policy" "gleb_assume_candidate" {
   policy = data.aws_iam_policy_document.gleb_assume_candidate.json
 }
 
+################################################################################
+# Direct cluster access: the candidate user also assumes infra/workstation's
+# IAM role (already granted AmazonEKSClusterAdminPolicy via an EKS access
+# entry), so they can run kubectl locally against the CIDR-restricted public
+# endpoint without the SSH workstation in the loop.
+################################################################################
+
+data "aws_iam_policy_document" "candidate_assume_workstation" {
+  count = var.workstation_role_arn != "" ? 1 : 0
+  statement {
+    actions   = ["sts:AssumeRole"]
+    resources = [var.workstation_role_arn]
+  }
+}
+
+resource "aws_iam_user_policy" "candidate_assume_workstation" {
+  count  = var.workstation_role_arn != "" ? 1 : 0
+  name   = "assume-workstation-role"
+  user   = aws_iam_user.candidate.name
+  policy = data.aws_iam_policy_document.candidate_assume_workstation[0].json
+}
+
 resource "aws_iam_role_policy" "candidate_ec2_eks" {
   name   = "ec2-eks"
   role   = aws_iam_role.candidate.id

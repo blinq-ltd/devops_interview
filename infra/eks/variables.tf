@@ -80,9 +80,15 @@ variable "cluster_endpoint_private_access" {
 }
 
 variable "cluster_endpoint_public_access" {
-  description = "Enable the public EKS API endpoint. Must be false - the cluster is reachable only from the workstation via VPC peering."
+  description = "Enable the public EKS API endpoint, restricted to cluster_endpoint_public_access_cidrs. Candidates connect directly from their own machines this way instead of through the (disabled) SSH workstation."
   type        = bool
   default     = false
+}
+
+variable "cluster_endpoint_public_access_cidrs" {
+  description = "CIDR blocks allowed to reach the public EKS API endpoint when cluster_endpoint_public_access = true. Scope tightly to the current candidate's public IP/32 (plus the interviewer's own) before each interview, and tighten it back down afterward."
+  type        = list(string)
+  default     = []
 }
 
 variable "create_autoscaling_slr" {

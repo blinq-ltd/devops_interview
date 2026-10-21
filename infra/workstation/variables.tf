@@ -68,6 +68,18 @@ variable "terraform_version" {
   default     = "1.14.0"
 }
 
+variable "enable_workstation_instance" {
+  description = "Whether to create the workstation EC2 instance, its Elastic IP, and its SSH/dashboard/internal security groups. Set false once candidates connect directly via the CIDR-restricted public EKS endpoint instead of SSH - the IAM role (and its EKS cluster-admin access entry) is kept regardless, so it can still be assumed directly."
+  type        = bool
+  default     = true
+}
+
+variable "candidate_user_arns" {
+  description = "IAM user ARNs (e.g. infra/candidate-access's candidate user) allowed to assume this role directly via sts:AssumeRole, for local kubectl/docker access when the workstation EC2 instance is disabled."
+  type        = list(string)
+  default     = []
+}
+
 variable "additional_internal_cidrs" {
   description = "Extra CIDR blocks (e.g. the peered infra/eks VPC) the workstation's internal-service egress rules should reach, in addition to the default VPC"
   type        = list(string)

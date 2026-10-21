@@ -14,18 +14,20 @@ data "aws_ami" "ubuntu" {
 }
 
 data "aws_key_pair" "workstation" {
+  count    = var.enable_workstation_instance ? 1 : 0
   key_name = var.ec2_key_pair_name
 }
 
 resource "aws_instance" "workstation" {
+  count         = var.enable_workstation_instance ? 1 : 0
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
-  key_name      = data.aws_key_pair.workstation.key_name
+  key_name      = data.aws_key_pair.workstation[0].key_name
   subnet_id     = local.workstation_subnet_id
   vpc_security_group_ids = [
-    aws_security_group.workstation_ssh.id,
-    aws_security_group.workstation_internal.id,
-    aws_security_group.workstation_dashboards.id,
+    aws_security_group.workstation_ssh[0].id,
+    aws_security_group.workstation_internal[0].id,
+    aws_security_group.workstation_dashboards[0].id,
   ]
   iam_instance_profile        = aws_iam_instance_profile.workstation.name
   associate_public_ip_address = true
@@ -56,7 +58,8 @@ resource "aws_instance" "workstation" {
 }
 
 resource "aws_eip" "workstation" {
-  instance = aws_instance.workstation.id
+  count    = var.enable_workstation_instance ? 1 : 0
+  instance = aws_instance.workstation[0].id
   domain   = "vpc"
 
   tags = {
