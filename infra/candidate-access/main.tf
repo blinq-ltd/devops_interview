@@ -73,6 +73,27 @@ resource "aws_iam_user_policy" "candidate_assume_workstation" {
   policy = data.aws_iam_policy_document.candidate_assume_workstation[0].json
 }
 
+################################################################################
+# A handful of read-only EKS actions that some clients (console, IDE/Toolkit
+# plugins) call under the base identity directly, before/without assuming
+# any role - eks:DescribeClusterVersions has no resource-level ARN support
+# (AWS requires Resource "*" for it), discovered live when a candidate's
+# tooling hit AccessDenied on it as arn:...:user/candidate.
+################################################################################
+
+data "aws_iam_policy_document" "candidate_eks_readonly_base" {
+  statement {
+    actions   = ["eks:DescribeClusterVersions"]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_user_policy" "candidate_eks_readonly_base" {
+  name   = "eks-readonly-base"
+  user   = aws_iam_user.candidate.name
+  policy = data.aws_iam_policy_document.candidate_eks_readonly_base.json
+}
+
 resource "aws_iam_role_policy" "candidate_ec2_eks" {
   name   = "ec2-eks"
   role   = aws_iam_role.candidate.id
