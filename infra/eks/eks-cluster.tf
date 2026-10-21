@@ -21,12 +21,12 @@ locals {
     })
   }
 
-  # Cluster admins = explicit var.cluster_admins plus the workstation's own
-  # IAM role, so the workstation (and anyone who SSHes into it) has full
-  # kubectl/admin access once network reachability exists via VPC peering.
+  # Cluster admins = explicit var.cluster_admins plus the candidate IAM user
+  # directly, so kubectl works off the base identity over the CIDR-restricted
+  # public endpoint without assuming the workstation role.
   cluster_admin_principals = concat(
     var.cluster_admins,
-    var.workstation_iam_role_arn != "" ? [var.workstation_iam_role_arn] : [],
+    var.candidate_user_arn != "" ? [var.candidate_user_arn] : [],
   )
 
   access_entries = {

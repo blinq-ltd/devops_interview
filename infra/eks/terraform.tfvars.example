@@ -1,11 +1,16 @@
 # Copy to terraform.tfvars (gitignored) and fill in before applying.
-# Get the workstation_* values from: cd ../workstation && terraform output
 
 cluster_admins = [
   "arn:aws:iam::123456789012:user/your-iam-user",
 ]
 
-workstation_iam_role_arn      = "arn:aws:iam::123456789012:role/devops-interview-workstation-candidate-role"
-workstation_vpc_id            = "vpc-xxxxxxxxxxxxxxxxx"
-workstation_vpc_cidr          = "172.31.0.0/16"
-workstation_security_group_id = "sg-xxxxxxxxxxxxxxxxx"
+# infra/candidate-access's candidate IAM user ARN - granted cluster-admin
+# directly so kubectl works off its base identity.
+candidate_user_arn = "arn:aws:iam::123456789012:user/candidate"
+
+# Candidates connect over the CIDR-restricted public endpoint, not VPC
+# peering from a workstation. Scope this to the current candidate's IP
+# (plus your own) before each interview.
+enable_vpc_peering                   = false
+cluster_endpoint_public_access       = true
+cluster_endpoint_public_access_cidrs = ["203.0.113.1/32"]

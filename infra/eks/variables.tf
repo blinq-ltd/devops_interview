@@ -127,8 +127,8 @@ variable "node_group_map" {
 # Access
 ################################################################################
 
-variable "workstation_iam_role_arn" {
-  description = "IAM role ARN of the candidate workstation (infra/workstation output workstation_iam_role_arn). Granted AmazonEKSClusterAdminPolicy so the workstation has full cluster access once VPC peering gives it network reachability."
+variable "candidate_user_arn" {
+  description = "ARN of the candidate IAM user (infra/candidate-access's aws_iam_user.candidate). Granted AmazonEKSClusterAdminPolicy directly, so kubectl works off the base identity without needing to assume the workstation role."
   type        = string
   default     = ""
 }
