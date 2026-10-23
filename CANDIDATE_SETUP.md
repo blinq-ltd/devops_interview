@@ -31,7 +31,8 @@ Optional, not required: `k9s`, `stern`, `argocd` CLI.
 
 ## What you'll receive before the interview
 
-- An AWS access key/secret pair for an IAM user scoped to this exercise.
-- An `~/.aws/config` snippet with two profiles: one for running Terraform,
-  one for cluster/Docker/ECR access.
+- An AWS access key/secret pair for an IAM user scoped to this exercise. It
+  works directly for `kubectl`/Docker/ECR (no role assumption needed); a
+  second, separate profile is used only for the Terraform exercise.
+- An `~/.aws/config`/`~/.aws/credentials` snippet with both profiles set up.
 - Access to the GitHub repository.

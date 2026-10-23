@@ -22,11 +22,6 @@ output "workstation_candidate_policy_arn" {
   value       = aws_iam_policy.workstation_candidate.arn
 }
 
-output "workstation_iam_role_arn" {
-  description = "IAM role (kept regardless of enable_workstation_instance - reference this for EKS access entries and for infra/candidate-access's workstation_role_arn, which lets the candidate user assume it directly)"
-  value       = aws_iam_role.workstation.arn
-}
-
 output "workstation_internal_security_group_id" {
   description = "Attach this SG as an allowed ingress source on future EKS/Aurora/Kafka/observability security groups (null when enable_workstation_instance = false)"
   value       = var.enable_workstation_instance ? aws_security_group.workstation_internal[0].id : null

@@ -1,47 +1,12 @@
-# IAM role attached to the workstation instance. This is the role the
-# CANDIDATE effectively operates under (via the instance profile) during the
-# live session, so it is kept least-privilege. ECR/RDS are scoped by the
-# `${var.name_prefix}-*` naming convention (devops-interview-*); the EKS
-# cluster itself is named via var.eks_cluster_name ("interview") since
-# infra/eks doesn't use the devops-interview-* prefix for the cluster name.
-#
-# NOTE: scenario 6 (Terraform drift/maintenance exercise) needs the candidate
-# to run `terraform plan`/`apply` against the EKS nodegroup. The exact
-# EKS/EC2/IAM write permissions that requires can only be scoped once that
-# module exists, so a placeholder statement is marked TODO below — revisit
-# before the interview.
-
-data "aws_iam_policy_document" "workstation_assume_role" {
-  statement {
-    sid     = "Ec2InstanceProfile"
-    actions = ["sts:AssumeRole"]
-    principals {
-      type        = "Service"
-      identifiers = ["ec2.amazonaws.com"]
-    }
-  }
-
-  # Lets the candidate IAM user (infra/candidate-access) assume this role
-  # directly for local kubectl/docker access, now that the candidate
-  # connects straight to the CIDR-restricted public EKS endpoint instead of
-  # SSHing into a workstation running under this role's instance profile.
-  dynamic "statement" {
-    for_each = length(var.candidate_user_arns) > 0 ? [1] : []
-    content {
-      sid     = "DirectCandidateAccess"
-      actions = ["sts:AssumeRole"]
-      principals {
-        type        = "AWS"
-        identifiers = var.candidate_user_arns
-      }
-    }
-  }
-}
-
-resource "aws_iam_role" "workstation" {
-  name               = "${var.name_prefix}-workstation-candidate-role"
-  assume_role_policy = data.aws_iam_policy_document.workstation_assume_role.json
-}
+# This policy used to live on an IAM role assumed by the candidate
+# workstation EC2 instance (and later, directly by the candidate IAM user).
+# The role is now decommissioned - the candidate user holds this policy
+# (and cluster-admin, via infra/eks's access entry) directly on its own base
+# identity, so no role/instance-profile/assume-role plumbing is needed at
+# all. ECR/RDS are scoped by the `${var.name_prefix}-*` naming convention
+# (devops-interview-*); the EKS cluster itself is named via
+# var.eks_cluster_name ("interview") since infra/eks doesn't use the
+# devops-interview-* prefix for the cluster name.
 
 data "aws_iam_policy_document" "workstation_candidate" {
   # Identity / general diagnostics
@@ -143,23 +108,9 @@ data "aws_iam_policy_document" "workstation_candidate" {
   # nodegroup(s) and tag-change operations rehearsed for the exercise.
 }
 
-resource "aws_iam_role_policy" "workstation_candidate" {
-  name   = "${var.name_prefix}-candidate-scoped-access"
-  role   = aws_iam_role.workstation.id
-  policy = data.aws_iam_policy_document.workstation_candidate.json
-}
-
-# Standalone copy of the same policy, attachable directly to the candidate
-# IAM user (infra/candidate-access) so base-identity API calls (tools that
-# don't go through this role's sts:AssumeRole flow) have the same access the
-# workstation instance used to have, instead of discovering gaps one
-# AccessDenied at a time.
+# Attached directly to the candidate IAM user (infra/candidate-access) - see
+# that module's candidate_workstation_policy attachment.
 resource "aws_iam_policy" "workstation_candidate" {
   name   = "${var.name_prefix}-candidate-scoped-access-standalone"
   policy = data.aws_iam_policy_document.workstation_candidate.json
-}
-
-resource "aws_iam_instance_profile" "workstation" {
-  name = "${var.name_prefix}-workstation"
-  role = aws_iam_role.workstation.name
 }

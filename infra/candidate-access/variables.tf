@@ -19,12 +19,6 @@ variable "candidate_role_name" {
   default = "candidate"
 }
 
-variable "workstation_role_arn" {
-  description = "ARN of infra/workstation's IAM role (output workstation_iam_role_arn). The candidate user is granted sts:AssumeRole on it directly, for local kubectl access against the CIDR-restricted public EKS endpoint now that the workstation EC2 instance is disabled."
-  type        = string
-  default     = ""
-}
-
 variable "workstation_candidate_policy_arn" {
   description = "ARN of infra/workstation's standalone candidate policy (output workstation_candidate_policy_arn) - the same permissions the workstation role had, attached directly to the candidate user so base-identity API calls (tools that don't assume a role) work too."
   type        = string

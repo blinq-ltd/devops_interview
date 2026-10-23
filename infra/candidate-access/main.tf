@@ -52,54 +52,17 @@ resource "aws_iam_user_policy" "gleb_assume_candidate" {
 }
 
 ################################################################################
-# Direct cluster access: the candidate user also assumes infra/workstation's
-# IAM role (already granted AmazonEKSClusterAdminPolicy via an EKS access
-# entry), so they can run kubectl locally against the CIDR-restricted public
-# endpoint without the SSH workstation in the loop.
+# Direct cluster access: the candidate user itself (no role assumption) is
+# granted AmazonEKSClusterAdminPolicy via an EKS access entry in infra/eks
+# (var.candidate_user_arn there), plus full EKS API access and the
+# workstation's old scoped policy below - so kubectl/docker/terraform-plan-6
+# all work off this one base identity over the CIDR-restricted public
+# endpoint, no SSH workstation or role assumption required.
 ################################################################################
-
-data "aws_iam_policy_document" "candidate_assume_workstation" {
-  count = var.workstation_role_arn != "" ? 1 : 0
-  statement {
-    actions   = ["sts:AssumeRole"]
-    resources = [var.workstation_role_arn]
-  }
-}
-
-resource "aws_iam_user_policy" "candidate_assume_workstation" {
-  count  = var.workstation_role_arn != "" ? 1 : 0
-  name   = "assume-workstation-role"
-  user   = aws_iam_user.candidate.name
-  policy = data.aws_iam_policy_document.candidate_assume_workstation[0].json
-}
-
-################################################################################
-# A handful of read-only EKS actions that some clients (console, IDE/Toolkit
-# plugins) call under the base identity directly, before/without assuming
-# any role - eks:DescribeClusterVersions has no resource-level ARN support
-# (AWS requires Resource "*" for it), discovered live when a candidate's
-# tooling hit AccessDenied on it as arn:...:user/candidate.
-################################################################################
-
-data "aws_iam_policy_document" "candidate_eks_readonly_base" {
-  statement {
-    actions   = ["eks:DescribeClusterVersions"]
-    resources = ["*"]
-  }
-}
-
-resource "aws_iam_user_policy" "candidate_eks_readonly_base" {
-  name   = "eks-readonly-base"
-  user   = aws_iam_user.candidate.name
-  policy = data.aws_iam_policy_document.candidate_eks_readonly_base.json
-}
 
 # Full EKS API access on the base identity, after repeated one-at-a-time
 # AccessDenied errors (DescribeClusterVersions, ListClusters, ...) from
-# whatever tooling calls AWS directly instead of through an assumed role.
-# Kubernetes RBAC (actual kubectl access) is unaffected either way - that
-# still depends solely on the EKS access entry for the assumed workstation
-# role, not on this IAM policy.
+# clients that call AWS directly rather than assuming a role.
 data "aws_iam_policy_document" "candidate_eks_full" {
   statement {
     actions   = ["eks:*"]
@@ -111,6 +74,25 @@ resource "aws_iam_user_policy" "candidate_eks_full" {
   name   = "eks-full-access"
   user   = aws_iam_user.candidate.name
   policy = data.aws_iam_policy_document.candidate_eks_full.json
+}
+
+# Same story as EKS: ecr:DescribeRepositories/ListImages/DescribeImages
+# called with no repository name filter (list-all form) is evaluated against
+# the account-wide repository/* resource regardless of the actual policy's
+# name-pattern scoping, so it fails even though the scoped push/pull flow to
+# a specific repo works fine. This account is a disposable, isolated
+# interview sandbox, so broadening to the whole account is low risk.
+data "aws_iam_policy_document" "candidate_ecr_full" {
+  statement {
+    actions   = ["ecr:*"]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_user_policy" "candidate_ecr_full" {
+  name   = "ecr-full-access"
+  user   = aws_iam_user.candidate.name
+  policy = data.aws_iam_policy_document.candidate_ecr_full.json
 }
 
 # The same permissions the workstation role had, attached directly to the

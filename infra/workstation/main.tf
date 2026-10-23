@@ -29,7 +29,11 @@ resource "aws_instance" "workstation" {
     aws_security_group.workstation_internal[0].id,
     aws_security_group.workstation_dashboards[0].id,
   ]
-  iam_instance_profile        = aws_iam_instance_profile.workstation.name
+  # No instance profile: the workstation's IAM role was decommissioned once
+  # candidates started connecting directly (candidate IAM user, granted
+  # cluster-admin/EKS/ECR/etc. access on its own - see infra/candidate-access
+  # and infra/eks). If this instance is ever re-enabled, it inherits no AWS
+  # permissions by default.
   associate_public_ip_address = true
 
   metadata_options {

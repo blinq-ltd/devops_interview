@@ -12,27 +12,23 @@ output "gleb_secret_access_key" {
 }
 
 output "aws_cli_profile_snippet" {
-  description = "Append to ~/.aws/config and ~/.aws/credentials to let the candidate run terraform via the 'candidate' role and kubectl via the workstation role"
+  description = "Append to ~/.aws/config and ~/.aws/credentials. kubectl/docker/ECR work directly off the base profile (no role assumption); only Terraform (scenario 6) needs the separate role-assumption profile."
   value       = <<-EOT
     # ~/.aws/credentials
-    [candidate-base]
+    [candidate]
     aws_access_key_id = ${aws_iam_access_key.candidate.id}
     aws_secret_access_key = <terraform output -raw gleb_secret_access_key>
+    region = ${var.aws_region}
 
     # ~/.aws/config
     [profile candidate-terraform]
     role_arn = ${aws_iam_role.candidate.arn}
-    source_profile = candidate-base
+    source_profile = candidate
     region = ${var.aws_region}
 
-    [profile candidate-cluster]
-    role_arn = ${var.workstation_role_arn}
-    source_profile = candidate-base
-    region = ${var.aws_region}
-
-    # terraform plan/apply on infra/workstation or infra/eks:
+    # kubectl / docker / ECR / direct cluster access (base identity, no role assumption):
+    #   AWS_PROFILE=candidate aws eks update-kubeconfig --name interview --region ${var.aws_region}
+    # terraform plan/apply on infra/workstation or infra/eks (scenario 6):
     #   AWS_PROFILE=candidate-terraform terraform plan
-    # kubectl / docker / direct cluster access:
-    #   AWS_PROFILE=candidate-cluster aws eks update-kubeconfig --name interview --region ${var.aws_region}
   EOT
 }
