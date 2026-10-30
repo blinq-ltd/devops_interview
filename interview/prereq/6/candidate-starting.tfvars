@@ -2,14 +2,25 @@
 # starting point. Not sensitive (no secrets, just resource identifiers),
 # safe to commit so this exercise is reproducible across candidates even
 # after the real tfvars (gitignored) has moved on.
+#
+# NOTE: cluster_endpoint_public_access_cidrs changes before every interview
+# (each candidate's IP is added, then removed afterward) - this snapshot
+# will drift from the live tfvars on that one field alone. Regenerate
+# saved-plan.txt against the real, current tfvars shortly before each
+# interview if you want a perfectly clean plan; the CIDR-only diff this
+# causes is cosmetic and unrelated to the exercise either way.
 cluster_admins = [
   "arn:aws:iam::382163918348:user/tapan_halani",
 ]
 
-workstation_iam_role_arn      = "arn:aws:iam::382163918348:role/devops-interview-workstation-candidate-role"
-workstation_vpc_id            = "vpc-0ffe7238cc3af1d54"
-workstation_vpc_cidr          = "172.31.0.0/16"
-workstation_security_group_id = "sg-093a62edadd1c791b"
+candidate_user_arn = "arn:aws:iam::382163918348:user/candidate"
+
+enable_vpc_peering = false
+
+cluster_endpoint_public_access = true
+cluster_endpoint_public_access_cidrs = [
+  "27.60.16.223/32", # interviewer (tapan) - current IP as of 2026-10-30 (IP keeps rotating)
+]
 
 node_group_map = {
   default = {
